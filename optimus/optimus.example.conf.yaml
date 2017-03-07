@@ -1,0 +1,256 @@
+# This is the header in the csv that determines the subject
+subject: STUDY_ID
+
+# This header determines the event
+event: RESULT_DATE
+
+# This header determines what the information is
+identifier: NAME
+
+# These help the parser parse the csv
+delimiter: ","
+quotechar: "\""
+
+# These will change depending on your mappings object.
+__value_key: &value_key ORD_VALUE
+__unit_key: &unit_key REFERENCE_UNIT
+__event_key: &event_key RESULT_DATE
+
+# These are keys to the lambdas in the transforms dict in optimus
+# they are used to do small transformations to data like reformating dates
+transforms:
+  format_date: &format_date format_date
+
+
+# This has the same responsibility as the translation table
+mappings:
+
+  # - row_key: MY SUPER COOL MEDICAL TEST
+  #   headers:
+  #     - header_key: *MY_ALIAS_THAT_ADDRESSES_THIS_FIELD_1
+  #       field: MY_REDCAP_FIELD_NAME_1
+  #     - header_key: *MY_ALIAS_THAT_ADDRESSES_THIS_FIELD_2
+  #       field: MY_REDCAP_FIELD_NAME_2
+  #       .
+  #       .
+  #       .
+  #     - field: MY_REDCAP_FIELD_NAME_THAT_NEEDS_TO_BE_DEFAULTED
+  #       value: MY_DEFAULT_VALUE
+  #     - header_key: *MY_ALIAS_THAT_ADDRESSES_THIS_FIELD_3
+  #       field: MY_REDCAP_FIELD_NAME_3
+  #       transform: *MY_ALIAS_FOR_HOW_TO_TRANSFORM_THE_DATA_IN_THE_CELL
+
+  - row_key: SODIUM
+    headers:
+      - header_key: *value_key
+        field: sodium_im_lborres
+      - header_key: *unit_key
+        field: sodium_im_lborresu
+      - field: sodium_im_lbstat
+        value: "null"
+      - field: chem_im_lbdtc
+        header_key: *event_key
+        transform: *format_date
+
+  - row_key: ALBUMIN
+    headers:
+      - header_key: *value_key
+        field: alb_im_lborres
+      - header_key: *unit_key
+        field: alb_im_lborresu
+      - field: alb_im_lbstat
+        value: "null"
+      - field: chem_im_lbdtc
+        header_key: *event_key
+        transform: *format_date
+
+  - row_key: ALT (SGOT)
+    headers:
+      - header_key: *value_key
+        field: ast_im_lborres
+      - header_key: *unit_key
+        field: ast_im_lborresu
+      - field: ast_im_lbstat
+        value: "null"
+      - field: chem_im_lbdtc
+        header_key: *event_key
+        transform: *format_date
+
+  - row_key: ALT (SGPT)
+    headers:
+      - header_key: *value_key
+        field: alt_im_lborres
+      - header_key: *unit_key
+        field: alt_im_lborresu
+      - field: alt_im_lbstat
+        value: "null"
+      - field: chem_im_lbdtc
+        header_key: *event_key
+        transform: *format_date
+
+  - row_key: BILIRUBIN DIRECT
+    headers:
+      - header_key: *value_key
+        field: dbil_im_lborres
+      - header_key: *unit_key
+        field: dbil_im_lborresu
+      - field: dbil_im_lbstat
+        value: "null"
+      - field: chem_im_lbdtc
+        header_key: *event_key
+        transform: *format_date
+
+  - row_key: BILIRUBIN TOTAL
+    headers:
+      - header_key: *value_key
+        field: tbil_im_lborres
+      - header_key: *unit_key
+        field: tbil_im_lborresu
+      - field: tbil_im_lbstat
+        value: "null"
+      - field: chem_im_lbdtc
+        header_key: *event_key
+        transform: *format_date
+
+  - row_key: CREATININE
+    headers:
+      - header_key: *value_key
+        field: creat_im_lborres
+      - header_key: *unit_key
+        field: creat_im_lborresu
+      - field: creat_im_lbstat
+        value: "null"
+      - field: chem_im_lbdtc
+        header_key: *event_key
+        transform: *format_date
+
+  - row_key: INR
+    headers:
+      - header_key: *value_key
+        field: inr_im_lborres
+      - field: inr_im_lbstat
+        value: "null"
+      - field: inr_im_lbdtc
+        header_key: *event_key
+        transform: *format_date
+
+  - row_key: GLUCOSE
+    headers:
+      - header_key: *value_key
+        field: gluc_im_lborres
+      - header_key: *unit_key
+        field: gluc_im_lborresu
+      - field: gluc_im_lbstat
+        value: "null"
+      - field: chem_im_lbdtc
+        header_key: *event_key
+        transform: *format_date
+
+  - row_key: HCV RNA, QUANTITATIVE REAL TIME PCR
+    headers:
+      - header_key: *value_key
+        field: hcv_im_lborres
+      - header_key: *unit_key
+        field: hcv_im_lborresu
+      - header_key: *event_key
+        field: hcv_im_lbdtc
+        transform: *format_date
+      - value: "Y"
+        field: hcv_im_supplb_hcvquant
+
+  - row_key: HEMOGLOBIN
+    headers:
+      - header_key: *value_key
+        field: hemo_im_lborres
+      - header_key: *unit_key
+        field: hemo_im_lborresu
+      - field: hemo_im_lbstat
+        value: "null"
+      - field: cbc_im_lbdtc
+        header_key: *event_key
+        transform: *format_date
+
+  - row_key: LYMPHOCYTES
+    headers:
+      - header_key: *value_key
+        field: lymce_im_lborres
+      - header_key: *unit_key
+        field: lymce_im_lborresu
+      - field: lymce_im_lbstat
+        value: "null"
+      - field: cbc_im_lbdtc
+        header_key: *event_key
+        transform: *format_date
+
+  - row_key: LYMPHOCYTES ABSOLUTE COUNT
+    headers:
+      - header_key: *value_key
+        field: lym_im_lborres
+      - header_key: *unit_key
+        field: lym_im_lborresu
+      - field: lym_im_lbstat
+        value: "null"
+      - field: cbc_im_lbdtc
+        header_key: *event_key
+        transform: *format_date
+
+  - row_key: NEUTROPHILS
+    headers:
+      - header_key: *value_key
+        field: neut_im_lborres
+      - header_key: *unit_key
+        field: neut_im_lborresu
+      - field: neut_im_lbstat
+        value: "null"
+      - field: cbc_im_lbdtc
+        header_key: *event_key
+        transform: *format_date
+
+  - row_key: NEUTROPHILS ABSOLUTE COUNT
+    headers:
+      - header_key: *value_key
+        field: anc_im_lborres
+      - header_key: *unit_key
+        field: anc_im_lborresu
+      - field: anc_im_lbstat
+        value: "null"
+      - field: cbc_im_lbdtc
+        header_key: *event_key
+        transform: *format_date
+
+  - row_key: PLATELET COUNT
+    headers:
+      - header_key: *value_key
+        field: plat_im_lborres
+      - header_key: *unit_key
+        field: plat_im_lborresu
+      - field: plat_im_lbstat
+        value: "null"
+      - field: cbc_im_lbdtc
+        header_key: *event_key
+        transform: *format_date
+
+  - row_key: POTASSIUM
+    headers:
+      - header_key: *value_key
+        field: k_im_lborres
+      - header_key: *unit_key
+        field: k_im_lborresu
+      - field: k_im_lbstat
+        value: "null"
+      - field: chem_im_lbdtc
+        header_key: *event_key
+        transform: *format_date
+
+  - row_key: WBC URINE
+    headers:
+      - header_key: *value_key
+        field: wbc_im_lborres
+      - header_key: *unit_key
+        field: wbc_im_lborresu
+      - field: wbc_im_lbstat
+        value: "null"
+      - field: cbc_im_lbdtc
+        header_key: *event_key
+        transform: *format_date
+

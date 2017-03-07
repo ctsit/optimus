@@ -1,0 +1,35 @@
+# this is what the in memory representation looks like
+subjects:
+  1:
+    event1:
+      field1: value1
+      field2: value2
+    event2:
+      field1: value1
+      field2: value2
+  2:
+    event1:
+      field1: value1
+      field2: value2
+    event2:
+      field1: value1
+      field2: value2
+
+# this in json is what lineman consumes
+serialized:
+  - subjkey: 1
+    event: event1
+    field1: value1
+    field2: value2
+  - subjkey: 1
+    event: event2
+    field1: value1
+    field2: value2
+  - subjkey: 2
+    event: event1
+    field1: value1
+    field2: value2
+  - subjkey: 2
+    event: event2
+    field1: value1
+    field2: value2
