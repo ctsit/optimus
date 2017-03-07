@@ -1,4 +1,4 @@
-"""
+docstr = """
 Optimus
 
 Usage: optimus.py [-h] (<file> <config>) [-o <output.json>]
@@ -40,7 +40,7 @@ transforms = {
     'format_date': lambda d : date_parser.parse(d).strftime('%Y-%m-%d')
 }
 
-def main(args):
+def main(args=docopt(docstr)):
     with open(args[_config], 'r') as config_file:
         global config
         config = yaml.load(config_file.read())
@@ -84,7 +84,7 @@ def use_mapping(row, mapping):
     return data
 
 if __name__ == '__main__':
-    args = docopt(__doc__)
+    args = docopt(docstr)
     main(args)
     exit()
 

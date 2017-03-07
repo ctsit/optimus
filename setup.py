@@ -8,5 +8,10 @@ setup(name='optimus',
       author_email='pfwhite9@gmail.com',
       license='MIT',
       packages=['optimus'],
+      entry_points={
+          'console_scripts': [
+              'optimus = optimus.__main__:main',
+          ],
+      },
       install_requires=['docopt', 'pyyaml', 'python-dateutil'],
       zip_safe=False)
