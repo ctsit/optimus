@@ -14,7 +14,7 @@ from docopt import docopt
 import dateutil.parser as date_parser
 import yaml
 
-from StagingArea import StagingArea
+from .StagingArea import StagingArea
 
 _file = '<file>'
 _config = '<config>'
