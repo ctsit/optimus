@@ -21,6 +21,9 @@ __event_key: &event_key RESULT_DATE
 transforms:
   format_date: &format_date format_date
 
+# this is used to null out fields
+__delete_this_field: &field_delete "__DELETE__"
+
 
 # This has the same responsibility as the translation table
 mappings:

@@ -27,6 +27,7 @@ _id = 'identifier' # identifies the row as the results of a particular test
 _delim = 'delimiter' # how the csv is delimited
 _qc = 'quotechar' # how things are quoted
 _map = 'mappings'
+__field_delete = '__DELETE__'
 
 # config mapping magic strings
 _rk = 'row_key'
@@ -77,6 +78,8 @@ def use_mapping(row, mapping):
     for col in mapping[_hdr]:
         if col.get(_v):
             data[col[_fld]] = col[_v]
+            if col[_v] == __field_delete
+                data[col[_fld]] = ""
         elif col.get(_t):
             data[col[_fld]] = transforms[col[_t]](row[col[_hk]])
         else:
