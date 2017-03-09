@@ -50,7 +50,7 @@ mappings:
       - header_key: *unit_key
         field: sodium_im_lborresu
       - field: sodium_im_lbstat
-        value: "null"
+        value: *field_delete
       - field: chem_im_lbdtc
         header_key: *event_key
         transform: *format_date
@@ -62,7 +62,7 @@ mappings:
       - header_key: *unit_key
         field: alb_im_lborresu
       - field: alb_im_lbstat
-        value: "null"
+        value: *field_delete
       - field: chem_im_lbdtc
         header_key: *event_key
         transform: *format_date
@@ -74,7 +74,7 @@ mappings:
       - header_key: *unit_key
         field: ast_im_lborresu
       - field: ast_im_lbstat
-        value: "null"
+        value: *field_delete
       - field: chem_im_lbdtc
         header_key: *event_key
         transform: *format_date
@@ -86,7 +86,7 @@ mappings:
       - header_key: *unit_key
         field: alt_im_lborresu
       - field: alt_im_lbstat
-        value: "null"
+        value: *field_delete
       - field: chem_im_lbdtc
         header_key: *event_key
         transform: *format_date
@@ -98,7 +98,7 @@ mappings:
       - header_key: *unit_key
         field: dbil_im_lborresu
       - field: dbil_im_lbstat
-        value: "null"
+        value: *field_delete
       - field: chem_im_lbdtc
         header_key: *event_key
         transform: *format_date
@@ -110,7 +110,7 @@ mappings:
       - header_key: *unit_key
         field: tbil_im_lborresu
       - field: tbil_im_lbstat
-        value: "null"
+        value: *field_delete
       - field: chem_im_lbdtc
         header_key: *event_key
         transform: *format_date
@@ -122,7 +122,7 @@ mappings:
       - header_key: *unit_key
         field: creat_im_lborresu
       - field: creat_im_lbstat
-        value: "null"
+        value: *field_delete
       - field: chem_im_lbdtc
         header_key: *event_key
         transform: *format_date
@@ -132,7 +132,7 @@ mappings:
       - header_key: *value_key
         field: inr_im_lborres
       - field: inr_im_lbstat
-        value: "null"
+        value: *field_delete
       - field: inr_im_lbdtc
         header_key: *event_key
         transform: *format_date
@@ -144,7 +144,7 @@ mappings:
       - header_key: *unit_key
         field: gluc_im_lborresu
       - field: gluc_im_lbstat
-        value: "null"
+        value: *field_delete
       - field: chem_im_lbdtc
         header_key: *event_key
         transform: *format_date
@@ -168,7 +168,7 @@ mappings:
       - header_key: *unit_key
         field: hemo_im_lborresu
       - field: hemo_im_lbstat
-        value: "null"
+        value: *field_delete
       - field: cbc_im_lbdtc
         header_key: *event_key
         transform: *format_date
@@ -180,7 +180,7 @@ mappings:
       - header_key: *unit_key
         field: lymce_im_lborresu
       - field: lymce_im_lbstat
-        value: "null"
+        value: *field_delete
       - field: cbc_im_lbdtc
         header_key: *event_key
         transform: *format_date
@@ -192,7 +192,7 @@ mappings:
       - header_key: *unit_key
         field: lym_im_lborresu
       - field: lym_im_lbstat
-        value: "null"
+        value: *field_delete
       - field: cbc_im_lbdtc
         header_key: *event_key
         transform: *format_date
@@ -204,7 +204,7 @@ mappings:
       - header_key: *unit_key
         field: neut_im_lborresu
       - field: neut_im_lbstat
-        value: "null"
+        value: *field_delete
       - field: cbc_im_lbdtc
         header_key: *event_key
         transform: *format_date
@@ -216,7 +216,7 @@ mappings:
       - header_key: *unit_key
         field: anc_im_lborresu
       - field: anc_im_lbstat
-        value: "null"
+        value: *field_delete
       - field: cbc_im_lbdtc
         header_key: *event_key
         transform: *format_date
@@ -228,7 +228,7 @@ mappings:
       - header_key: *unit_key
         field: plat_im_lborresu
       - field: plat_im_lbstat
-        value: "null"
+        value: *field_delete
       - field: cbc_im_lbdtc
         header_key: *event_key
         transform: *format_date
@@ -240,7 +240,7 @@ mappings:
       - header_key: *unit_key
         field: k_im_lborresu
       - field: k_im_lbstat
-        value: "null"
+        value: *field_delete
       - field: chem_im_lbdtc
         header_key: *event_key
         transform: *format_date
@@ -252,7 +252,7 @@ mappings:
       - header_key: *unit_key
         field: wbc_im_lborresu
       - field: wbc_im_lbstat
-        value: "null"
+        value: *field_delete
       - field: cbc_im_lbdtc
         header_key: *event_key
         transform: *format_date

@@ -78,7 +78,7 @@ def use_mapping(row, mapping):
     for col in mapping[_hdr]:
         if col.get(_v):
             data[col[_fld]] = col[_v]
-            if col[_v] == __field_delete
+            if col[_v] == __field_delete:
                 data[col[_fld]] = ""
         elif col.get(_t):
             data[col[_fld]] = transforms[col[_t]](row[col[_hk]])
