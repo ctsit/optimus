@@ -38,20 +38,19 @@ class StagingArea(object):
                 event[self.subject_field] = subject_key
                 event[self.event_field] = event_key
                 flatlist.append(event)
-        return json.dumps(flatlist)
+        flatlist.sort(key=lambda record: record['dm_subjid']+record['redcap_event_name'])
+        return json.dumps(flatlist, sort_keys=True)
 
-    def event_condense():
+    def event_condense(self):
         all_fields = set()
         for subject_key in self.subjects.keys():
             subject = self.subjects[subject_key]
             for event_key in subject.keys():
                 event = subject[event_key]
                 all_fields = all_fields.union(event.keys())
-        print('all fields')
-        print(all_fields)
         for subject_key in self.subjects.keys():
             subject = self.subjects[subject_key]
-            event_keys = subject.keys()
+            event_keys = list(subject.keys())
             event_keys.sort()
             for index, key in enumerate(event_keys):
                 event = subject[key]
