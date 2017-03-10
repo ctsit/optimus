@@ -40,7 +40,37 @@ class StagingArea(object):
                 flatlist.append(event)
         return json.dumps(flatlist)
 
+    def event_condense():
+        all_fields = set()
+        for subject_key in self.subjects.keys():
+            subject = self.subjects[subject_key]
+            for event_key in subject.keys():
+                event = subject[event_key]
+                all_fields = all_fields.union(event.keys())
+        print('all fields')
+        print(all_fields)
+        for subject_key in self.subjects.keys():
+            subject = self.subjects[subject_key]
+            event_keys = subject.keys()
+            event_keys.sort()
+            for index, key in enumerate(event_keys):
+                event = subject[key]
+                fields = set(event.keys())
+                missing = all_fields.difference(fields)
+                if len(missing):
+                    for field in missing:
+                        # look to the next event
+                        remaining_events = [subject[event_key] for event_key in event_keys if event_keys.index(event_key) > index]
+                        # if it has the field, take it and move to next field
+                        for item in remaining_events:
+                            if item.get(field):
+                                event[field] = item[field]
+                                del item[field]
+                                break
+
+
     def transform_and_roll_out(self):
+        self.event_condense()
         if (self.outformat == 'json'):
             return self.jsonify()
 
