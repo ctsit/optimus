@@ -1,0 +1,286 @@
+# project specific processing
+
+project: "hcv_target"
+
+# redcap form stuff
+
+forms:
+  - *cbc
+  - *chemistry
+  - *inr
+  - *hcvrna
+
+event_data: &event_data event_date
+
+derived_types:
+  status: &status status
+
+cbc: &cbc
+  form_name: cbc_imported
+  events: 200
+  csv_fields: 
+    record_id: &record_id dm_subjid
+    wbc_vel: &wbc_val wbc_im_lborres # white blood cell
+    wbc_unit: &wbc_unit wbc_im_lborresu
+    neutrophils_percent: &neut_percent neut_im_lborres
+    neutrophils_percent_unit: &neut_percent_unit neut_im_lborresu
+  derived_fields:
+    wbc_completed: &wbc_complete
+      field: wbc_im_lbstat
+      type: *status
+      uses: [*wbc_val, *wbc_unit]
+    neutrophils_completed: &neut_complete
+      field: neut_im_lbstat
+      type: *status
+      uses: [*neut_percent, *neut_percent_unit]
+    done_date: &cbc_done_date
+      field: cbc_im_lbdtc
+      uses: *event_data
+    
+chemistry: &chemistry
+  form_name: chem_imported
+  events: 200
+  csv_fields: 
+    sodium_value: &sodium_value sodium_im_borres
+    sodium_unit: &sodium_unit sodium_im_borresu
+    albumin_value: &albumin_value alb_im_borres
+    albumin_unit: &albumin_unit alb_im_borresu
+  derived_fields:
+    done_date: &chem_done_date chem_im_lbdtc
+    sodium_completed: &sodium_completed sodium_im_lbstat
+    albumin_completed: &albumin_completed alb_im_lbstat
+
+inr: &inr
+  form_name: inr_imported
+  events: 120
+  csv_fields:
+  derived_fields:
+    done_date: &inr_done_date inr_im_lbdtc
+
+hcvrna: &hcvrna
+  form_name: hcv_rna_imported
+  events: 60
+  csv_fields:
+  derived_fields:
+    done_date: &rna_done_date hcv_im_lbdtc
+
+# csv stuff
+headers:
+  subject_header: &subject STUDY_ID
+  value_header: &value_header ORD_VALUE
+  unit_header: &unit_header REFERENCE_UNIT
+  event_header: &event_header RESULT_DATE
+  test_ident_header: &test_name NAME
+
+key_header: *test_name
+
+rows:
+  - row_key: WBC URINE
+    outputs:
+      - datum: *value_header
+        field: *wbc_val
+        date: *event_header
+        subj: *subject
+      - datum: *unit_header
+        field: *wbc_init
+        date: *event_header
+        subj: *subject
+
+  - row_key: NEUTROPHILS
+    headers:
+      - header: *value_header
+        field: *neut_percent
+      - header: *unit_header
+        field: *neut_percent_unit
+      - field: *neut_complete
+        value: *field_delete
+      - header: *event_header
+        field: *cbc_done_date
+
+  - row_key: SODIUM
+    headers:
+      - header: *value_header
+        field: *sodium_value
+      - header: *unit_header
+        field: *sodium_unit
+      - header: *event_header
+        field: *chem_done_date
+
+  - row_key: ALBUMIN
+    headers:
+      - header: *value_header
+        field: *albumin_value
+      - header: *unit_header
+        field: *albumin_unit
+      - header: *event_header
+        field: *chem_done_date
+
+  - row_key: ALT (SGOT)
+    headers:
+      - header: *value_header
+        field: ast_im_lborres
+      - header: *unit_header
+        field: ast_im_lborresu
+      - field: ast_im_lbstat
+        value: *field_delete
+      - field: chem_im_lbdtc
+        header: *event_header
+        transform: *format_date
+
+  - row_key: ALT (SGPT)
+    headers:
+      - header: *value_header
+        field: alt_im_lborres
+      - header: *unit_header
+        field: alt_im_lborresu
+      - field: alt_im_lbstat
+        value: *field_delete
+      - field: chem_im_lbdtc
+        header: *event_header
+        transform: *format_date
+
+  - row_key: BILIRUBIN DIRECT
+    headers:
+      - header: *value_header
+        field: dbil_im_lborres
+      - header: *unit_header
+        field: dbil_im_lborresu
+      - field: dbil_im_lbstat
+        value: *field_delete
+      - field: chem_im_lbdtc
+        header: *event_header
+        transform: *format_date
+
+  - row_key: BILIRUBIN TOTAL
+    headers:
+      - header: *value_header
+        field: tbil_im_lborres
+      - header: *unit_header
+        field: tbil_im_lborresu
+      - field: tbil_im_lbstat
+        value: *field_delete
+      - field: chem_im_lbdtc
+        header: *event_header
+        transform: *format_date
+
+  - row_key: CREATININE
+    headers:
+      - header: *value_header
+        field: creat_im_lborres
+      - header: *unit_header
+        field: creat_im_lborresu
+      - field: creat_im_lbstat
+        value: *field_delete
+      - field: chem_im_lbdtc
+        header: *event_header
+        transform: *format_date
+
+  - row_key: INR
+    headers:
+      - header: *value_header
+        field: inr_im_lborres
+      - field: inr_im_lbstat
+        value: *field_delete
+      - field: inr_im_lbdtc
+        header: *event_header
+        transform: *format_date
+
+  - row_key: GLUCOSE
+    headers:
+      - header: *value_header
+        field: gluc_im_lborres
+      - header: *unit_header
+        field: gluc_im_lborresu
+      - field: gluc_im_lbstat
+        value: *field_delete
+      - field: chem_im_lbdtc
+        header: *event_header
+        transform: *format_date
+
+  - row_key: HCV RNA, QUANTITATIVE REAL TIME PCR
+    headers:
+      - header: *value_header
+        field: hcv_im_lborres
+      - header: *unit_header
+        field: hcv_im_lborresu
+      - header: *event_header
+        field: hcv_im_lbdtc
+        transform: *format_date
+      - value: "Y"
+        field: hcv_im_supplb_hcvquant
+
+  - row_key: HEMOGLOBIN
+    headers:
+      - header: *value_header
+        field: hemo_im_lborres
+      - header: *unit_header
+        field: hemo_im_lborresu
+      - field: hemo_im_lbstat
+        value: *field_delete
+      - field: cbc_im_lbdtc
+        header: *event_header
+        transform: *format_date
+
+  - row_key: LYMPHOCYTES
+    headers:
+      - header: *value_header
+        field: lymce_im_lborres
+      - header: *unit_header
+        field: lymce_im_lborresu
+      - field: lymce_im_lbstat
+        value: *field_delete
+      - field: cbc_im_lbdtc
+        header: *event_header
+        transform: *format_date
+
+  - row_key: LYMPHOCYTES ABSOLUTE COUNT
+    headers:
+      - header: *value_header
+        field: lym_im_lborres
+      - header: *unit_header
+        field: lym_im_lborresu
+      - field: lym_im_lbstat
+        value: *field_delete
+      - field: cbc_im_lbdtc
+        header: *event_header
+        transform: *format_date
+
+  - row_key: NEUTROPHILS ABSOLUTE COUNT
+    headers:
+      - header: *value_header
+        field: anc_im_lborres
+      - header: *unit_header
+        field: anc_im_lborresu
+      - field: anc_im_lbstat
+        value: *field_delete
+      - field: cbc_im_lbdtc
+        header: *event_header
+        transform: *format_date
+
+  - row_key: PLATELET COUNT
+    headers:
+      - header: *value_header
+        field: plat_im_lborres
+      - header: *unit_header
+        field: plat_im_lborresu
+      - field: plat_im_lbstat
+        value: *field_delete
+      - field: cbc_im_lbdtc
+        header: *event_header
+        transform: *format_date
+
+  - row_key: POTASSIUM
+    headers:
+      - header: *value_header
+        field: k_im_lborres
+      - header: *unit_header
+        field: k_im_lborresu
+      - field: k_im_lbstat
+        value: *field_delete
+      - field: chem_im_lbdtc
+        header: *event_header
+        transform: *format_date
+
+
+forms:
+  - *chem_imported

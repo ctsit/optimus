@@ -3,50 +3,83 @@ def form_for_field(config, field):
         if field in form['csv_fields'].values():
             return form['form_name']
 
-def build_subj_event_form(config, data):
-    subj_event_form = {}
+def build_flat_record(config, data):
+    flat_form_records = []
     for datum in data:
         subj = datum['subj']
         event = datum['date']
         field = datum['field']
         form = form_for_field(config, field)
+        value = datum['datum']
 
-        if not subj_event_form.get(subj):
-            subj_event_form[subj] = {event: {form: {}}}
-        if not subj_event_form.get(subj).get(event):
-            subj_event_form[subj][event] = {form: {}}
-        if not subj_event_form.get(subj).get(event).get(form):
-            subj_event_form[subj][event][form] = {}
+        found = False
+        for record in flat_form_records:
+            subj_same = record['dm_subjid'] == subj
+            event_same = record['redcap_event_name'] == event
 
-        if field in config['csv_fields'].values():
-            subj_event[subj][event][form][field] = datum['datum']
-    return subj_event_form
+            if subj_same and event_same:
+                found = record
+        if not found:
+            found = {
+                'dm_subjid': subj,
+                'redcap_event_name': event,
+                form: {}
+            }
+            flat_form_records.append(found)
 
-def derive_fields(config, form):
-    pass
+        if not found.get(form):
+            found[form] = {}
+        found[form][field] = value
+
+    return flat_form_records
+
+def derive_lbstat_fields(config, form, event, subj):
+    for der_field in config['derived_fields']:
+        target_field = der_field.get('field')
+        uses = der_field.get('uses')
+        der_type = der_field.get('type')
+        status_type = config['derived_types']['status']
+
+        if form != config['hcvrna']:
+            if type(uses) != type([]):
+                value = form[config['csv_fields'][uses]]
+            elif type(uses) == type([]) and der_type == status_type:
+                vals = [form.get(key) for key in uses if form.get(key)]
+                if len(vals) == 2:
+                    value = None
+                else:
+                    value = "NOT_DONE"
+        else:
+            # do something special wrt the multiple dependant fields
+            pass
+
+        if not value == None and target_field:
+            form[target_field] = value
+
+    return form
 
 def derive_completed_fields(config, data):
-    # read the form template
-    ## figure out what we need to update
-    ## determine what we need to look at to get the info
-
-    # get the info from the form data
-    # fill out the completed fields correctly
-    for subj in data.values():
-        for event in subj.values():
-            for form_key in event:
-                form_config = [form for form in config['forms'] if form['form_name'] == form_key].pop()
-                event[form_key] = derive_fields(form_config, event[form_key])
-    pass
+    forms = config['forms']
+    names = [form['form_name'] for form in forms]
+    for flat_record in data:
+        for form, form_name in zip(forms, names):
+            form_data = flat_record.get(form_name)
+            if form_data:
+                subj = flat_record['dm_subjid']
+                event = flat_record['redcap_event_name']
+                flat_record[form_name] = derive_lbstat_fields(form,
+                                                              form_data,
+                                                              event=event,
+                                                              subj=)
+    return data
 
 def derive_form_completed(config, data):
-    # check the form
-    # see what values we have and dont have
-    # if we have something and something or something for all checks
-    ## then okay
-    pass
+    # read through through the flat records
+    # go through each form
+    # add the field that corresponds to complete
+    for record in data
 
-def truncate_extra_events(config, data):
+ def truncate_extra_events(config, data):
     # check to see how many events we have
     # if we have more than that
     ## get rid of them
