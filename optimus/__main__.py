@@ -37,10 +37,6 @@ _fld = 'field'
 _v = 'value'
 _t = 'transform'
 
-transforms = {
-    'format_date': lambda d : date_parser.parse(d).strftime('%Y-%m-%d')
-}
-
 def main(args=docopt(docstr)):
     with open(args[_config], 'r') as config_file:
         global config
@@ -54,6 +50,9 @@ def main(args=docopt(docstr)):
         row_data = get_row_data(row)
         for item in row_data:
             csv_output_data.append(item)
+
+    transformed = hcv_target.pipeline(config, csv_output_data)
+    print(transformed)
 
     csv_file.close()
 

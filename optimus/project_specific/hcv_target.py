@@ -33,16 +33,17 @@ def build_flat_record(config, data):
 
     return flat_form_records
 
-def derive_lbstat_fields(config, form, event, subj):
-    for der_field in config['derived_fields']:
+def derive_lbstat_fields(config, form_config, form, event, subj):
+    for der_field in form_config['derived_fields'].values():
         target_field = der_field.get('field')
         uses = der_field.get('uses')
         der_type = der_field.get('type')
-        status_type = config['derived_types']['status']
+        status_type = 'status'
 
         if form != config['hcvrna']:
             if type(uses) != type([]):
-                value = form[config['csv_fields'][uses]]
+                if uses == 'redcap_event_name':
+                    value = event
             elif type(uses) == type([]) and der_type == status_type:
                 vals = [form.get(key) for key in uses if form.get(key)]
                 if len(vals) == 2:
@@ -67,8 +68,9 @@ def derive_completed_fields(config, data):
             if form_data:
                 subj = flat_record['dm_subjid']
                 event = flat_record['redcap_event_name']
-                flat_record[form_name] = derive_lbstat_fields(form,
-                                                              form_data,
+                flat_record[form_name] = derive_lbstat_fields(config=config,
+                                                              form_config=form,
+                                                              form=form_data,
                                                               event=event,
                                                               subj=subj)
     return data
@@ -78,7 +80,8 @@ def derive_form_completed(config, data):
     form_names = [form['form_name'] for form in forms]
     for record in data:
         for name in form_names:
-            record[name][name + '_completed'] = 'Y'
+            if record.get(name):
+                record[name][name + '_completed'] = 'Y'
     return data
 
 def truncate_extra_events(config, data):
@@ -92,15 +95,20 @@ def truncate_extra_events(config, data):
         if not person_forms.get(person):
             person_forms[person] = {form : [] for form in form_names}
         for name in form_names:
-            person_forms[person][name].append(record[name])
+            rec = record.get(name)
+            event = record.get('redcap_event_name')
+            if rec:
+                person_forms[person][name].append((rec, event))
     # when a single list is too long,
     for name in form_names:
         form_config = [form for form in forms if form['form_name'] == name].pop()
         for person in person_forms.values():
             max_events = form_config['events']
             # sort by the event and truncate the list
-            person[name].sort(key=lambda d : d['redcap_event_name'])
-            person[name] = person[name][0:(max_events - 1)]
+            recs = person.get(name)
+            if recs:
+                person[name].sort(key=lambda d : d[1])
+                person[name] = [rec[0] for rec in person[name][0:(max_events - 1)]]
 
     return data
 
@@ -113,7 +121,7 @@ def pipeline(config, csv_data):
     forms = config['forms']
 
     pipeline = [
-        build_subject_event_form,
+        build_flat_record,
         derive_completed_fields,
         derive_form_completed,
         truncate_extra_events
@@ -127,6 +135,6 @@ def pipeline(config, csv_data):
     for func in pipeline:
         form_data = func(**kwargs)
         kwargs['data'] = form_data
-    completed[form['form_name']] = kwargs['data']
+    completed['form_name'] = kwargs['data']
 
     return completed

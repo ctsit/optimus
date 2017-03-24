@@ -4,7 +4,7 @@ project: "hcv_target"
 
 # redcap form stuff
 
-event_data: &event_data event_date
+event_data: &event_data redcap_event_name
 
 derived_types:
   status: &status status
