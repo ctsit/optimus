@@ -70,20 +70,39 @@ def derive_completed_fields(config, data):
                 flat_record[form_name] = derive_lbstat_fields(form,
                                                               form_data,
                                                               event=event,
-                                                              subj=)
+                                                              subj=subj)
     return data
 
 def derive_form_completed(config, data):
-    # read through through the flat records
-    # go through each form
-    # add the field that corresponds to complete
-    for record in data
+    forms = config['forms']
+    form_names = [form['form_name'] for form in forms]
+    for record in data:
+        for name in form_names:
+            record[name][name + '_completed'] = 'Y'
+    return data
 
- def truncate_extra_events(config, data):
-    # check to see how many events we have
-    # if we have more than that
-    ## get rid of them
-    pass
+def truncate_extra_events(config, data):
+    forms = config['forms']
+    form_names = [form['form_name'] for form in forms]
+
+    person_forms = {}
+    # lists of person forms,
+    for record in data:
+        person = record['dm_subjid']
+        if not person_forms.get(person):
+            person_forms[person] = {form : [] for form in form_names}
+        for name in form_names:
+            person_forms[person][name].append(record[name])
+    # when a single list is too long,
+    for name in form_names:
+        form_config = [form for form in forms if form['form_name'] == name].pop()
+        for person in person_forms.values():
+            max_events = form_config['events']
+            # sort by the event and truncate the list
+            person[name].sort(key=lambda d : d['redcap_event_name'])
+            person[name] = person[name][0:(max_events - 1)]
+
+    return data
 
 def pipeline(config, csv_data):
     """
@@ -94,7 +113,7 @@ def pipeline(config, csv_data):
     forms = config['forms']
 
     pipeline = [
-        build_subject_event_form
+        build_subject_event_form,
         derive_completed_fields,
         derive_form_completed,
         truncate_extra_events

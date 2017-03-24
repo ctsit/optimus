@@ -14,7 +14,7 @@ from docopt import docopt
 import dateutil.parser as date_parser
 import yaml
 
-from .StagingArea import StagingArea
+from .project_specific import hcv_target
 
 _file = '<file>'
 _config = '<config>'
@@ -49,42 +49,37 @@ def main(args=docopt(docstr)):
     csv_file = open(args[_file], 'r')
     data = csv.DictReader(csv_file, delimiter=config[_delim], quotechar=config[_qc])
 
-    autobots = StagingArea()
-
+    csv_output_data = []
     for row in data:
-        subject_key = row[config[_subj]]
-        event_key = row[config[_ev]]
-        mapping = get_mapping_for_row(row)
-        if mapping:
-            mapped_data = use_mapping(row, mapping)
-            autobots.add_data(subject_key, event_key, **mapped_data)
+        row_data = get_row_data(row)
+        for item in row_data:
+            csv_output_data.append(item)
 
     csv_file.close()
 
     if args.get(_output):
         with open(args[_output], 'w') as outfile:
-            outfile.write(autobots.transform_and_roll_out())
+            # outfile.write(autobots.transform_and_roll_out())
+            pass
     else:
-        print(autobots.transform_and_roll_out())
+        pass
+        # print(autobots.transform_and_roll_out())
 
-def get_mapping_for_row(row):
-    row_key = row[config[_id]]
-    for mapping in config[_map]:
-        if mapping[_rk] == row_key:
-            return mapping
+def get_row_data(row):
+    data_for_row = []
+    for row_map in config['rows']:
+        if row[config['key_header']] == row_map['row_key']:
+            outputs = row_map['outputs']
+            for out in outputs:
+                datum = {
+                    'datum': row[out['datum']],
+                    'field': out['field'],
+                    'date': row[out['date']],
+                    'subj': row[out['subj']],
+                }
+                data_for_row.append(datum)
+    return data_for_row or []
 
-def use_mapping(row, mapping):
-    data = {}
-    for col in mapping[_hdr]:
-        if col.get(_v):
-            data[col[_fld]] = col[_v]
-            if col[_v] == __field_delete:
-                data[col[_fld]] = ""
-        elif col.get(_t):
-            data[col[_fld]] = transforms[col[_t]](row[col[_hk]])
-        else:
-            data[col[_fld]] = row[col[_hk]]
-    return data
 
 if __name__ == '__main__':
     args = docopt(docstr)
