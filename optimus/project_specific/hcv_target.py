@@ -112,6 +112,31 @@ def truncate_extra_events(config, data):
 
     return data
 
+def flatten_forms(config, data):
+    forms = config['forms']
+    form_names = [form['form_name'] for form in forms]
+    new_data = []
+
+    for record in data:
+        new_record = {}
+        for key in record.keys():
+            if key in form_names:
+                form_name = key
+                form = record[form_name]
+                for key in form.keys():
+                    new_record[key] = form[key]
+            else:
+                new_record[key] = record[key]
+        new_data.append(new_record)
+        for form_name in form_names:
+            try:
+                del new_data[-1][form_name]
+            except:
+                pass
+
+    return new_data
+
+
 def pipeline(config, csv_data):
     """
     Given an optimus config and data in the csv output form,
@@ -124,7 +149,8 @@ def pipeline(config, csv_data):
         build_flat_record,
         derive_completed_fields,
         derive_form_completed,
-        truncate_extra_events
+        truncate_extra_events,
+        flatten_forms
     ]
 
     kwargs = {

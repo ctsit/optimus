@@ -134,19 +134,26 @@ inr: &inr
   form_name: inr_imported
   events: 120
   csv_fields:
+    inr_info: &inr_info inr_lborres
   derived_fields:
-    done_date: &inr_done_date inr_im_lbdtc
-    # inr_completed: &sodium_completed
-    #   field: inr_im_lbstat
-    #   type: *status
-    #   uses: [*inr, *sodium_unit]
+    done_date: &inr_done_date
+     field: inr_im_lbdtc
+     uses: *event_data
+    inr_completed: &inr_completed
+      field: inr_im_lbstat
+      type: *status
+      uses: [*inr_info]
 
 hcvrna: &hcvrna
   form_name: hcv_rna_imported
   events: 60
   csv_fields:
+    hcv_quant: &hcv_quant hcv_im_lborres
+    hcv_unit: &hcv_unit hcv_im_lborresu
   derived_fields:
-    done_date: &rna_done_date hcv_im_lbdtc
+    done_date: &rna_done_date
+      field: hcv_im_lbdtc
+      uses: *event_data
 
 forms:
   - *cbc
@@ -212,14 +219,14 @@ rows:
         date: *event_header
         subj: *subject
 
-  - row_key: ALT (SGOT)
+  - row_key: AST (SGOT)
     outputs:
       - datum: *value_header
         field: *serum_ast
         date: *event_header
         subj: *subject
       - datum: *unit_header
-        field: *serum_ast
+        field: *serum_ast_unit
         date: *event_header
         subj: *subject
 
@@ -230,7 +237,7 @@ rows:
         date: *event_header
         subj: *subject
       - datum: *unit_header
-        field: *serum_alt
+        field: *serum_alt_unit
         date: *event_header
         subj: *subject
 
@@ -344,27 +351,24 @@ rows:
         date: *event_header
         subj: *subject
 
+  - row_key: INR
+    outputs:
+      - datum: *value_header
+        field: *potassium
+        date: *event_header
+        subj: *subject
+      - datum: *unit_header
+        field: *potassium_unit
+        date: *event_header
+        subj: *subject
 
-  # - row_key: INR
-  #   headers:
-  #     - header: *value_header
-  #       field: inr_im_lborres
-  #     - field: inr_im_lbstat
-  #       value: *field_delete
-  #     - field: inr_im_lbdtc
-  #       header: *event_header
-  #       transform: *format_date
-
-  # - row_key: HCV RNA, QUANTITATIVE REAL TIME PCR
-  #   headers:
-  #     - header: *value_header
-  #       field: hcv_im_lborres
-  #     - header: *unit_header
-  #       field: hcv_im_lborresu
-  #     - header: *event_header
-  #       field: hcv_im_lbdtc
-  #       transform: *format_date
-  #     - value: "Y"
-  #       field: hcv_im_supplb_hcvquant
-
-
+  - row_key: HCV RNA, QUANTITATIVE REAL TIME PCR
+    outputs:
+      - datum: *value_header
+        field: *hcv_quant
+        date: *event_header
+        subj: *subject
+      - datum: *unit_header
+        field: *hcv_unit
+        date: *event_header
+        subj: *subject
