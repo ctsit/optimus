@@ -18,6 +18,16 @@ cbc: &cbc
     wbc_unit: &wbc_unit wbc_im_lborresu
     neutrophils_percent: &neut_percent neut_im_lborres
     neutrophils_percent_unit: &neut_percent_unit neut_im_lborresu
+    absolute_neutrophils: &abs_neut anc_im_lborres
+    absolute_neutrophils_unit: &abs_neut_unit anc_im_lborresu
+    lymphocytes_total_cells: &lymphocytes_total_cells lymce_im_lborres
+    lymphocytes_total_cells_units: &lymphocytes_total_cells_units lymce_im_lborresu
+    lymphocytes: &lymphocytes lym_im_lborres
+    lymphocytes_units: &lymphocytes_units lym_im_lborresu
+    platelets: &platelets plat_im_lborres
+    platelets_units: &platelets_units plat_im_lborresu
+    hemoglobin: &hemoglobin hemo_im_lborres
+    hemoglobin_units: &hemoglobin_units hemo_im_lborresu
   derived_fields:
     wbc_completed: &wbc_complete
       field: wbc_im_lbstat
@@ -27,6 +37,26 @@ cbc: &cbc
       field: neut_im_lbstat
       type: *status
       uses: [*neut_percent, *neut_percent_unit]
+    absolute_neutrophils_completed: &abs_neut_complete
+      field: anc_im_lbstat
+      type: *status
+      uses: [*abs_neut, *abs_neut_unit]
+    lymphocytes_total_cells_completed: &lymce_complete
+      field: lymce_im_lbstat
+      type: *status
+      uses: [*lymphocytes_total_cells, *lymphocytes_total_cells_units]
+    lymphocytes_completed: &lym_complete
+      field: lym_im_lbstat
+      type: *status
+      uses: [*lymphocytes, *lymphocytes_units]
+    platelets_completed: &platelets_complete
+      field: plat_im_lbstat
+      type: *status
+      uses: [*platelets, *platelets_units]
+    hemoglobin_completed: &hemoglobin_complete
+      field: hemo_im_lbstat
+      type: *status
+      uses: [*hemoglobin, *hemoglobin_units]
     done_date: &cbc_done_date
       field: cbc_im_lbdtc
       uses: *event_data
