@@ -65,14 +65,70 @@ chemistry: &chemistry
   form_name: chem_imported
   events: 200
   csv_fields: 
-    sodium_value: &sodium_value sodium_im_borres
-    sodium_unit: &sodium_unit sodium_im_borresu
-    albumin_value: &albumin_value alb_im_borres
-    albumin_unit: &albumin_unit alb_im_borresu
+    serum_alt: &serum_alt alt_im_lborres
+    serum_alt_unit: &serum_alt_unit alt_im_lborresu
+    serum_ast: &serum_ast ast_im_lborres
+    serum_ast_unit: &serum_ast_unit ast_im_lborresu
+    alkaline_phos: &alk_phos alp_im_lborres
+    alkaline_phos_unit: &alk_phos_unit alp_im_lborresu
+    total_bilirubin: &tot_bil tbil_im_lborres
+    total_bilirubin_unit: &tot_bil_unit tbil_im_lborresu
+    direct_bilirubin: &dir_bil dbil_im_lborres
+    direct_bilirubin_unit: &dir_bil_unit dbil_im_lborresu
+    albumin: &albumin alb_im_lborres
+    albumin_unit: &albumin_unit alb_im_lborresu
+    creatine: &creatine creat_im_lborres
+    creatine_unit: &creatine_unit creat_im_lborresu
+    glucose: &glucose gluc_im_lborres
+    glucose_unit: &glucose_unit gluc_im_lborresu
+    potassium: &potassium k_im_lborres
+    potassium_unit: &potassium_unit k_im_lborresu
+    sodium_value: &sodium sodium_im_lborres
+    sodium_unit: &sodium_unit sodium_im_lborresu
   derived_fields:
-    done_date: &chem_done_date chem_im_lbdtc
-    sodium_completed: &sodium_completed sodium_im_lbstat
-    albumin_completed: &albumin_completed alb_im_lbstat
+    done_date: &chem_done_date
+      field: chem_im_lbdtc
+      uses: *event_data
+    serum_alt_completed: &serum_alt_completed
+      field: alt_im_lbstat
+      type: *status
+      uses: [*serum_alt, *serum_alt_unit]
+    serum_ast_completed: &serum_ast_completed
+      field: ast_im_lbstat
+      type: *status
+      uses: [*serum_ast, *serum_ast_unit]
+    alkaline_phos_completed: &alk_phos_completed
+      field: alp_im_lbstat
+      type: *status
+      uses: [*alk_phos, *alk_phos_unit]
+    total_bilirubin_completed: &tot_bil_completed
+      field: tbil_im_lbstat
+      type: *status
+      uses: [*tot_bil, *tot_bil_unit]
+    direct_bilirubin_completed: &dir_bil_completed
+      field: dbil_im_lbstat
+      type: *status
+      uses: [*dir_bil, *dir_bil_unit]
+    albumin_completed: &albumin_completed
+      field: alb_im_lbstat
+      type: *status
+      uses: [*albumin, *albumin_unit]
+    creatine_completed: &creatine_completed
+      field: creat_im_lbstat
+      type: *status
+      uses: [*creatine, *creatine_unit]
+    glucose_completed: &glucose_completed
+      field: gluc_im_lbstat
+      type: *status
+      uses: [*glucose, *glucose_unit]
+    potassium_completed: &potassium_completed
+      field: k_im_lbstat
+      type: *status
+      uses: [*potassium, *potassium_unit]
+    sodium_completed: &sodium_completed
+      field: sodium_im_lbstat
+      type: *status
+      uses: [*sodium, *sodium_unit]
 
 inr: &inr
   form_name: inr_imported
@@ -80,6 +136,10 @@ inr: &inr
   csv_fields:
   derived_fields:
     done_date: &inr_done_date inr_im_lbdtc
+    # inr_completed: &sodium_completed
+    #   field: inr_im_lbstat
+    #   type: *status
+    #   uses: [*inr, *sodium_unit]
 
 hcvrna: &hcvrna
   form_name: hcv_rna_imported
@@ -130,35 +190,49 @@ rows:
         date: *event_header
         subj: *subject
 
-  # - row_key: SODIUM
-  #   headers:
-  #     - header: *value_header
-  #       field: *sodium_value
-  #     - header: *unit_header
-  #       field: *sodium_unit
-  #     - header: *event_header
-  #       field: *chem_done_date
+  - row_key: SODIUM
+    outputs:
+      - datum: *value_header
+        field: *sodium
+        date: *event_header
+        subj: *subject
+      - datum: *unit_header
+        field: *sodium_unit
+        date: *event_header
+        subj: *subject
 
-  # - row_key: ALBUMIN
-  #   headers:
-  #     - header: *value_header
-  #       field: *albumin_value
-  #     - header: *unit_header
-  #       field: *albumin_unit
-  #     - header: *event_header
-  #       field: *chem_done_date
+  - row_key: ALBUMIN
+    outputs:
+      - datum: *value_header
+        field: *albumin
+        date: *event_header
+        subj: *subject
+      - datum: *unit_header
+        field: *albumin_unit
+        date: *event_header
+        subj: *subject
 
-  # - row_key: ALT (SGOT)
-  #   headers:
-  #     - header: *value_header
-  #       field: ast_im_lborres
-  #     - header: *unit_header
-  #       field: ast_im_lborresu
-  #     - field: ast_im_lbstat
-  #       value: *field_delete
-  #     - field: chem_im_lbdtc
-  #       header: *event_header
-  #       transform: *format_date
+  - row_key: ALT (SGOT)
+    outputs:
+      - datum: *value_header
+        field: *serum_ast
+        date: *event_header
+        subj: *subject
+      - datum: *unit_header
+        field: *serum_ast
+        date: *event_header
+        subj: *subject
+
+  - row_key: ALT (SGPT)
+    outputs:
+      - datum: *value_header
+        field: *serum_alt
+        date: *event_header
+        subj: *subject
+      - datum: *unit_header
+        field: *serum_alt
+        date: *event_header
+        subj: *subject
 
   # - row_key: ALT (SGPT)
   #   headers:

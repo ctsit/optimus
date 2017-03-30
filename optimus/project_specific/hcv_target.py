@@ -127,7 +127,6 @@ def pipeline(config, csv_data):
         truncate_extra_events
     ]
 
-    completed = {}
     kwargs = {
         'config': config,
         'data': csv_data
@@ -135,6 +134,6 @@ def pipeline(config, csv_data):
     for func in pipeline:
         form_data = func(**kwargs)
         kwargs['data'] = form_data
-    completed['form_name'] = kwargs['data']
+    completed = kwargs['data']
 
     return completed

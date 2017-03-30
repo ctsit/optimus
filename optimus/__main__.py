@@ -9,6 +9,7 @@ Options:
 
 """
 import csv
+import json
 
 from docopt import docopt
 import dateutil.parser as date_parser
@@ -52,7 +53,7 @@ def main(args=docopt(docstr)):
             csv_output_data.append(item)
 
     transformed = hcv_target.pipeline(config, csv_output_data)
-    print(transformed)
+    print(json.dumps(transformed, indent=4))
 
     csv_file.close()
 
