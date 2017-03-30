@@ -21,13 +21,13 @@ cbc: &cbc
     absolute_neutrophils: &abs_neut anc_im_lborres
     absolute_neutrophils_unit: &abs_neut_unit anc_im_lborresu
     lymphocytes_total_cells: &lymphocytes_total_cells lymce_im_lborres
-    lymphocytes_total_cells_units: &lymphocytes_total_cells_units lymce_im_lborresu
+    lymphocytes_total_cells_unit: &lymphocytes_total_cells_unit lymce_im_lborresu
     lymphocytes: &lymphocytes lym_im_lborres
-    lymphocytes_units: &lymphocytes_units lym_im_lborresu
+    lymphocytes_unit: &lymphocytes_unit lym_im_lborresu
     platelets: &platelets plat_im_lborres
-    platelets_units: &platelets_units plat_im_lborresu
+    platelets_unit: &platelets_unit plat_im_lborresu
     hemoglobin: &hemoglobin hemo_im_lborres
-    hemoglobin_units: &hemoglobin_units hemo_im_lborresu
+    hemoglobin_unit: &hemoglobin_unit hemo_im_lborresu
   derived_fields:
     wbc_completed: &wbc_complete
       field: wbc_im_lbstat
@@ -44,19 +44,19 @@ cbc: &cbc
     lymphocytes_total_cells_completed: &lymce_complete
       field: lymce_im_lbstat
       type: *status
-      uses: [*lymphocytes_total_cells, *lymphocytes_total_cells_units]
+      uses: [*lymphocytes_total_cells, *lymphocytes_total_cells_unit]
     lymphocytes_completed: &lym_complete
       field: lym_im_lbstat
       type: *status
-      uses: [*lymphocytes, *lymphocytes_units]
+      uses: [*lymphocytes, *lymphocytes_unit]
     platelets_completed: &platelets_complete
       field: plat_im_lbstat
       type: *status
-      uses: [*platelets, *platelets_units]
+      uses: [*platelets, *platelets_unit]
     hemoglobin_completed: &hemoglobin_complete
       field: hemo_im_lbstat
       type: *status
-      uses: [*hemoglobin, *hemoglobin_units]
+      uses: [*hemoglobin, *hemoglobin_unit]
     done_date: &cbc_done_date
       field: cbc_im_lbdtc
       uses: *event_data
@@ -77,8 +77,8 @@ chemistry: &chemistry
     direct_bilirubin_unit: &dir_bil_unit dbil_im_lborresu
     albumin: &albumin alb_im_lborres
     albumin_unit: &albumin_unit alb_im_lborresu
-    creatine: &creatine creat_im_lborres
-    creatine_unit: &creatine_unit creat_im_lborresu
+    creatinine: &creatinine creat_im_lborres
+    creatinine_unit: &creatinine_unit creat_im_lborresu
     glucose: &glucose gluc_im_lborres
     glucose_unit: &glucose_unit gluc_im_lborresu
     potassium: &potassium k_im_lborres
@@ -113,10 +113,10 @@ chemistry: &chemistry
       field: alb_im_lbstat
       type: *status
       uses: [*albumin, *albumin_unit]
-    creatine_completed: &creatine_completed
+    creatinine_completed: &creatinine_completed
       field: creat_im_lbstat
       type: *status
-      uses: [*creatine, *creatine_unit]
+      uses: [*creatinine, *creatinine_unit]
     glucose_completed: &glucose_completed
       field: gluc_im_lbstat
       type: *status
@@ -234,53 +234,116 @@ rows:
         date: *event_header
         subj: *subject
 
-  # - row_key: ALT (SGPT)
-  #   headers:
-  #     - header: *value_header
-  #       field: alt_im_lborres
-  #     - header: *unit_header
-  #       field: alt_im_lborresu
-  #     - field: alt_im_lbstat
-  #       value: *field_delete
-  #     - field: chem_im_lbdtc
-  #       header: *event_header
-  #       transform: *format_date
+  - row_key: BILIRUBIN DIRECT
+    outputs:
+      - datum: *value_header
+        field: *dir_bil
+        date: *event_header
+        subj: *subject
+      - datum: *unit_header
+        field: *dir_bil_unit
+        date: *event_header
+        subj: *subject
 
-  # - row_key: BILIRUBIN DIRECT
-  #   headers:
-  #     - header: *value_header
-  #       field: dbil_im_lborres
-  #     - header: *unit_header
-  #       field: dbil_im_lborresu
-  #     - field: dbil_im_lbstat
-  #       value: *field_delete
-  #     - field: chem_im_lbdtc
-  #       header: *event_header
-  #       transform: *format_date
+  - row_key: BILIRUBIN TOTAL
+    outputs:
+      - datum: *value_header
+        field: *tot_bil
+        date: *event_header
+        subj: *subject
+      - datum: *unit_header
+        field: *tot_bil_unit
+        date: *event_header
+        subj: *subject
 
-  # - row_key: BILIRUBIN TOTAL
-  #   headers:
-  #     - header: *value_header
-  #       field: tbil_im_lborres
-  #     - header: *unit_header
-  #       field: tbil_im_lborresu
-  #     - field: tbil_im_lbstat
-  #       value: *field_delete
-  #     - field: chem_im_lbdtc
-  #       header: *event_header
-  #       transform: *format_date
+  - row_key: CREATININE
+    outputs:
+      - datum: *value_header
+        field: *creatinine
+        date: *event_header
+        subj: *subject
+      - datum: *unit_header
+        field: *creatinine_unit
+        date: *event_header
+        subj: *subject
 
-  # - row_key: CREATININE
-  #   headers:
-  #     - header: *value_header
-  #       field: creat_im_lborres
-  #     - header: *unit_header
-  #       field: creat_im_lborresu
-  #     - field: creat_im_lbstat
-  #       value: *field_delete
-  #     - field: chem_im_lbdtc
-  #       header: *event_header
-  #       transform: *format_date
+  - row_key: GLUCOSE
+    outputs:
+      - datum: *value_header
+        field: *glucose
+        date: *event_header
+        subj: *subject
+      - datum: *unit_header
+        field: *glucose_unit
+        date: *event_header
+        subj: *subject
+
+  - row_key: HEMOGLOBIN
+    outputs:
+      - datum: *value_header
+        field: *hemoglobin
+        date: *event_header
+        subj: *subject
+      - datum: *unit_header
+        field: *hemoglobin_unit
+        date: *event_header
+        subj: *subject
+
+  - row_key: LYMPHOCYTES
+    outputs:
+      - datum: *value_header
+        field: *lymphocytes
+        date: *event_header
+        subj: *subject
+      - datum: *unit_header
+        field: *lymphocytes_unit
+        date: *event_header
+        subj: *subject
+
+  - row_key: LYMPHOCYTES ABSOLUTE COUNT
+    outputs:
+      - datum: *value_header
+        field: *lymphocytes_total_cells
+        date: *event_header
+        subj: *subject
+      - datum: *unit_header
+        field: *lymphocytes_total_cells_unit
+        date: *event_header
+        subj: *subject
+
+  - row_key: NEUTROPHILS ABSOLUTE COUNT
+    outputs:
+      - datum: *value_header
+        field: *abs_neut
+        date: *event_header
+        subj: *subject
+      - datum: *unit_header
+        field: *abs_neut_unit
+        date: *event_header
+        subj: *subject
+
+  - row_key: PLATELET COUNT
+    outputs:
+      - datum: *value_header
+        field: *platelets
+        date: *event_header
+        subj: *subject
+      - datum: *unit_header
+        field: *platelets_unit
+        date: *event_header
+        subj: *subject
+
+  - row_key: POTASSIUM
+    outputs:
+      - datum: *value_header
+        field: *potassium
+        date: *event_header
+        subj: *subject
+      - datum: *unit_header
+        field: *potassium_unit
+        date: *event_header
+        subj: *subject
+
 
   # - row_key: INR
   #   headers:
@@ -289,18 +352,6 @@ rows:
   #     - field: inr_im_lbstat
   #       value: *field_delete
   #     - field: inr_im_lbdtc
-  #       header: *event_header
-  #       transform: *format_date
-
-  # - row_key: GLUCOSE
-  #   headers:
-  #     - header: *value_header
-  #       field: gluc_im_lborres
-  #     - header: *unit_header
-  #       field: gluc_im_lborresu
-  #     - field: gluc_im_lbstat
-  #       value: *field_delete
-  #     - field: chem_im_lbdtc
   #       header: *event_header
   #       transform: *format_date
 
@@ -315,77 +366,5 @@ rows:
   #       transform: *format_date
   #     - value: "Y"
   #       field: hcv_im_supplb_hcvquant
-
-  # - row_key: HEMOGLOBIN
-  #   headers:
-  #     - header: *value_header
-  #       field: hemo_im_lborres
-  #     - header: *unit_header
-  #       field: hemo_im_lborresu
-  #     - field: hemo_im_lbstat
-  #       value: *field_delete
-  #     - field: cbc_im_lbdtc
-  #       header: *event_header
-  #       transform: *format_date
-
-  # - row_key: LYMPHOCYTES
-  #   headers:
-  #     - header: *value_header
-  #       field: lymce_im_lborres
-  #     - header: *unit_header
-  #       field: lymce_im_lborresu
-  #     - field: lymce_im_lbstat
-  #       value: *field_delete
-  #     - field: cbc_im_lbdtc
-  #       header: *event_header
-  #       transform: *format_date
-
-  # - row_key: LYMPHOCYTES ABSOLUTE COUNT
-  #   headers:
-  #     - header: *value_header
-  #       field: lym_im_lborres
-  #     - header: *unit_header
-  #       field: lym_im_lborresu
-  #     - field: lym_im_lbstat
-  #       value: *field_delete
-  #     - field: cbc_im_lbdtc
-  #       header: *event_header
-  #       transform: *format_date
-
-  # - row_key: NEUTROPHILS ABSOLUTE COUNT
-  #   headers:
-  #     - header: *value_header
-  #       field: anc_im_lborres
-  #     - header: *unit_header
-  #       field: anc_im_lborresu
-  #     - field: anc_im_lbstat
-  #       value: *field_delete
-  #     - field: cbc_im_lbdtc
-  #       header: *event_header
-  #       transform: *format_date
-
-  # - row_key: PLATELET COUNT
-  #   headers:
-  #     - header: *value_header
-  #       field: plat_im_lborres
-  #     - header: *unit_header
-  #       field: plat_im_lborresu
-  #     - field: plat_im_lbstat
-  #       value: *field_delete
-  #     - field: cbc_im_lbdtc
-  #       header: *event_header
-  #       transform: *format_date
-
-  # - row_key: POTASSIUM
-  #   headers:
-  #     - header: *value_header
-  #       field: k_im_lborres
-  #     - header: *unit_header
-  #       field: k_im_lborresu
-  #     - field: k_im_lbstat
-  #       value: *field_delete
-  #     - field: chem_im_lbdtc
-  #       header: *event_header
-  #       transform: *format_date
 
 
