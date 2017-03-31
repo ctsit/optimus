@@ -95,6 +95,16 @@ def derive_completed_fields(config, data):
                                                               subj=subj)
     return data
 
+def derive_form_imported(config, data):
+    forms = config['forms']
+    form_names = [form['form_name'] for form in forms]
+    form_importeds = [form['form_imported'] for form in forms]
+    for record in data:
+        for name, imported in zip(form_names, form_importeds):
+            if record.get(name):
+                record[name][imported] = 'Y'
+    return data
+
 def derive_form_completed(config, data):
     forms = config['forms']
     form_names = [form['form_name'] for form in forms]
@@ -168,6 +178,7 @@ def pipeline(config, csv_data):
     pipeline = [
         build_flat_record,
         derive_completed_fields,
+        derive_form_imported,
         derive_form_completed,
         truncate_extra_events,
         flatten_forms
