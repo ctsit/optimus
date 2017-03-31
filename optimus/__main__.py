@@ -1,10 +1,11 @@
 docstr = """
 Optimus
 
-Usage: optimus.py [-h] (<file> <config>) [-o <output.json>]
+Usage: optimus.py [-hd] (<file> <config>) [-o <output.json>]
 
 Options:
   -h --help                                     show this message and exit
+  -d --debug                                    json is indented for debugging
   -o <output.json> --output=<output.json>       optional output file for results
 
 """
@@ -53,17 +54,20 @@ def main(args=docopt(docstr)):
             csv_output_data.append(item)
 
     transformed = hcv_target.pipeline(config, csv_output_data)
-    print(json.dumps(transformed, indent=4))
 
     csv_file.close()
 
     if args.get(_output):
         with open(args[_output], 'w') as outfile:
-            # outfile.write(autobots.transform_and_roll_out())
-            pass
+            if args.get('--debug'):
+                outfile.write(json.dumps(transformed, indent=4))
+            else:
+                outfile.write(json.dumps(transformed, indent=4))
     else:
-        pass
-        # print(autobots.transform_and_roll_out())
+        if args.get('--debug'):
+            print(json.dumps(transformed, indent=4))
+        else:
+            print(json.dumps(transformed))
 
 def get_row_data(row):
     data_for_row = []

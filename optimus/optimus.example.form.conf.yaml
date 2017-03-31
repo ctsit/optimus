@@ -8,6 +8,8 @@ event_data: &event_data redcap_event_name
 
 derived_types:
   status: &status status
+  hcv_status: &hcv_status hcv_status
+  date_completed: &date_completed date_completed
 
 cbc: &cbc
   form_name: cbc_imported
@@ -59,6 +61,7 @@ cbc: &cbc
       uses: [*hemoglobin, *hemoglobin_unit]
     done_date: &cbc_done_date
       field: cbc_im_lbdtc
+      type: *date_completed
       uses: *event_data
     
 chemistry: &chemistry
@@ -88,6 +91,7 @@ chemistry: &chemistry
   derived_fields:
     done_date: &chem_done_date
       field: chem_im_lbdtc
+      type: *date_completed
       uses: *event_data
     serum_alt_completed: &serum_alt_completed
       field: alt_im_lbstat
@@ -137,8 +141,9 @@ inr: &inr
     inr_info: &inr_info inr_lborres
   derived_fields:
     done_date: &inr_done_date
-     field: inr_im_lbdtc
-     uses: *event_data
+      field: inr_im_lbdtc
+      type: *date_completed
+      uses: *event_data
     inr_completed: &inr_completed
       field: inr_im_lbstat
       type: *status
@@ -150,10 +155,16 @@ hcvrna: &hcvrna
   csv_fields:
     hcv_quant: &hcv_quant hcv_im_lborres
     hcv_unit: &hcv_unit hcv_im_lborresu
+    hcv_prescence: &hcv_prescence hcv_supplb_hcvdtct
   derived_fields:
     done_date: &rna_done_date
       field: hcv_im_lbdtc
+      type: *date_completed
       uses: *event_data
+    has_quant:
+      field: hcv_supplb_hcvquant
+      uses: [*hcv_quant, *hcv_unit, *hcv_prescence]
+      type: *hcv_status
 
 forms:
   - *cbc
@@ -370,5 +381,9 @@ rows:
         subj: *subject
       - datum: *unit_header
         field: *hcv_unit
+        date: *event_header
+        subj: *subject
+      - datum: *value_header
+        field: *hcv_prescence
         date: *event_header
         subj: *subject

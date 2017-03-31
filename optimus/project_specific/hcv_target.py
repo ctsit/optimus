@@ -39,20 +39,40 @@ def derive_lbstat_fields(config, form_config, form, event, subj):
         uses = der_field.get('uses')
         der_type = der_field.get('type')
         status_type = 'status'
+        hcv_status_type = 'hcv_status'
+        date_completed_type = 'date_completed'
 
-        if form != config['hcvrna']:
-            if type(uses) != type([]):
+        if form_config != config['hcvrna']:
+            if der_type == date_completed_type:
                 if uses == 'redcap_event_name':
                     value = event
             elif type(uses) == type([]) and der_type == status_type:
                 vals = [form.get(key) for key in uses if form.get(key)]
                 if len(vals) == 2:
                     value = None
+                elif target_field == 'inr_im_lbstat':
+                    if len(vals) == 1:
+                        value = None
                 else:
                     value = "NOT_DONE"
         else:
-            # do something special wrt the multiple dependant fields
-            pass
+            if der_type == hcv_status_type:
+                try:
+                    hcv_quant_field = form_config['csv_fields']['hcv_quant']
+                    hcv_prescence_field = form_config['csv_fields']['hcv_prescence']
+                    is_quantitative = float(form.get(hcv_quant_field))
+                    value = 'Y'
+                    del form[hcv_prescence_field]
+                except Exception as err:
+                    hcv_quant_field = form_config['csv_fields']['hcv_quant']
+                    hcv_unit_field = form_config['csv_fields']['hcv_unit']
+                    value = 'N'
+                    del form[hcv_quant_field]
+                    del form[hcv_unit_field]
+            elif der_type == date_completed_type:
+                if uses == 'redcap_event_name':
+                    value = event
+
 
         if not value == None and target_field:
             form[target_field] = value
