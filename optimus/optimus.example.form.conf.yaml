@@ -138,7 +138,7 @@ inr: &inr
   form_name: inr_imported
   events: 120
   csv_fields:
-    inr_info: &inr_info inr_lborres
+    inr_info: &inr_info inr_im_lborres
   derived_fields:
     done_date: &inr_done_date
       field: inr_im_lbdtc
@@ -365,11 +365,7 @@ rows:
   - row_key: INR
     outputs:
       - datum: *value_header
-        field: *potassium
-        date: *event_header
-        subj: *subject
-      - datum: *unit_header
-        field: *potassium_unit
+        field: *inr_info
         date: *event_header
         subj: *subject
 
