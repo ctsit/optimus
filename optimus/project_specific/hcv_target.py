@@ -1,39 +1,11 @@
-def form_for_field(config, field):
-    for form in config['forms']:
-        if field in form['csv_fields'].values():
-            return form['form_name']
+from .shared import *
 
-def build_flat_record(config, data):
-    flat_form_records = []
-    for datum in data:
-        subj = datum['subj']
-        event = datum['date']
-        field = datum['field']
-        form = form_for_field(config, field)
-        value = datum['datum']
-
-        found = False
-        for record in flat_form_records:
-            subj_same = record['dm_subjid'] == subj
-            event_same = record['redcap_event_name'] == event
-
-            if subj_same and event_same:
-                found = record
-        if not found:
-            found = {
-                'dm_subjid': subj,
-                'redcap_event_name': event,
-                form: {}
-            }
-            flat_form_records.append(found)
-
-        if not found.get(form):
-            found[form] = {}
-        found[form][field] = value
-
-    return flat_form_records
-
-def derive_lbstat_fields(config, form_config, form, event, subj):
+def derive_form_fields(config, form_config, form, event, subj):
+    """
+    Here we derive the branching logic fields on the form
+    level.
+    This function is pretty beastly and should probably be refactored
+    """
     for der_field in form_config['derived_fields'].values():
         target_field = der_field.get('field')
         uses = der_field.get('uses')
@@ -79,7 +51,10 @@ def derive_lbstat_fields(config, form_config, form, event, subj):
 
     return form
 
-def derive_completed_fields(config, data):
+def derive_fields(config, data):
+    """
+    This delegates the derivation of each individual form to the derive_form_field
+    """
     forms = config['forms']
     names = [form['form_name'] for form in forms]
     for flat_record in data:
@@ -88,14 +63,17 @@ def derive_completed_fields(config, data):
             if form_data:
                 subj = flat_record['dm_subjid']
                 event = flat_record['redcap_event_name']
-                flat_record[form_name] = derive_lbstat_fields(config=config,
-                                                              form_config=form,
-                                                              form=form_data,
-                                                              event=event,
-                                                              subj=subj)
+                flat_record[form_name] = derive_form_fields(config=config,
+                                                            form_config=form,
+                                                            form=form_data,
+                                                            event=event,
+                                                            subj=subj)
     return data
 
 def derive_form_imported(config, data):
+    """
+    This derives the form imported field
+    """
     forms = config['forms']
     form_names = [form['form_name'] for form in forms]
     form_importeds = [form['form_imported'] for form in forms]
@@ -104,67 +82,6 @@ def derive_form_imported(config, data):
             if record.get(name):
                 record[name][imported] = 'Y'
     return data
-
-def derive_form_completed(config, data):
-    forms = config['forms']
-    form_names = [form['form_name'] for form in forms]
-    for record in data:
-        for name in form_names:
-            if record.get(name):
-                record[name][name + '_completed'] = 'Y'
-    return data
-
-def truncate_extra_events(config, data):
-    forms = config['forms']
-    form_names = [form['form_name'] for form in forms]
-
-    person_forms = {}
-    # lists of person forms,
-    for record in data:
-        person = record['dm_subjid']
-        if not person_forms.get(person):
-            person_forms[person] = {form : [] for form in form_names}
-        for name in form_names:
-            rec = record.get(name)
-            event = record.get('redcap_event_name')
-            if rec:
-                person_forms[person][name].append((rec, event))
-    # when a single list is too long,
-    for name in form_names:
-        form_config = [form for form in forms if form['form_name'] == name].pop()
-        for person in person_forms.values():
-            max_events = form_config['events']
-            # sort by the event and truncate the list
-            recs = person.get(name)
-            if recs:
-                person[name].sort(key=lambda d : d[1])
-                person[name] = [rec[0] for rec in person[name][0:(max_events - 1)]]
-
-    return data
-
-def flatten_forms(config, data):
-    forms = config['forms']
-    form_names = [form['form_name'] for form in forms]
-    new_data = []
-
-    for record in data:
-        new_record = {}
-        for key in record.keys():
-            if key in form_names:
-                form_name = key
-                form = record[form_name]
-                for key in form.keys():
-                    new_record[key] = form[key]
-            else:
-                new_record[key] = record[key]
-        new_data.append(new_record)
-        for form_name in form_names:
-            try:
-                del new_data[-1][form_name]
-            except:
-                pass
-
-    return new_data
 
 
 def pipeline(config, csv_data):
@@ -177,7 +94,7 @@ def pipeline(config, csv_data):
 
     pipeline = [
         build_flat_record,
-        derive_completed_fields,
+        derive_fields,
         derive_form_imported,
         derive_form_completed,
         truncate_extra_events,

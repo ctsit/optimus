@@ -1,10 +1,12 @@
 # project specific processing
 
 project: "hcv_target"
+# project: "prioritize"
 
 # redcap form stuff
 
-event_data: &event_data redcap_event_name
+subject_field: &subject_field dm_subjid
+event_field: &event_field redcap_event_name
 
 derived_types:
   status: &status status
@@ -63,7 +65,7 @@ cbc: &cbc
     done_date: &cbc_done_date
       field: cbc_im_lbdtc
       type: *date_completed
-      uses: *event_data
+      uses: *event_field
     
 chemistry: &chemistry
   form_name: chem_imported
@@ -94,7 +96,7 @@ chemistry: &chemistry
     done_date: &chem_done_date
       field: chem_im_lbdtc
       type: *date_completed
-      uses: *event_data
+      uses: *event_field
     serum_alt_completed: &serum_alt_completed
       field: alt_im_lbstat
       type: *status
@@ -146,7 +148,7 @@ inr: &inr
     done_date: &inr_done_date
       field: inr_im_lbdtc
       type: *date_completed
-      uses: *event_data
+      uses: *event_field
     inr_completed: &inr_completed
       field: inr_im_lbstat
       type: *status
@@ -164,7 +166,7 @@ hcvrna: &hcvrna
     done_date: &rna_done_date
       field: hcv_im_lbdtc
       type: *date_completed
-      uses: *event_data
+      uses: *event_field
     has_quant:
       field: hcv_supplb_hcvquant
       uses: [*hcv_quant, *hcv_unit, *hcv_prescence]
