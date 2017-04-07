@@ -49,4 +49,5 @@ Since these are all the pieces of data in a row, this is the row's `outputs`.
 These outputs will be passed to the `pipeline` function that is defined with the project specific module 
 specified by the `project` field in the yaml configuration. 
 
-This pipeline function will pass the data given from the CSV parsing
+This pipeline function will pass the data given from the CSV parsing the individual quanta of data
+into a form that will be consumable by lineman. Specifically a json file.
