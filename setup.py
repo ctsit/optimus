@@ -10,7 +10,7 @@ setup(name='optimus',
       packages=['optimus'],
       entry_points={
           'console_scripts': [
-              'optimus = optimus.__main__:main',
+              'optimus = optimus.__main__:cli_run',
           ],
       },
       install_requires=['docopt', 'pyyaml', 'python-dateutil'],
