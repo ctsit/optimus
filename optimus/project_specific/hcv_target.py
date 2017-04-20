@@ -106,6 +106,7 @@ def pipeline(config, csv_data):
         'data': csv_data
     }
     for func in pipeline:
+        print('Optimus pipeline doing: {}'.format(func))
         form_data = func(**kwargs)
         kwargs['data'] = form_data
     completed = kwargs['data']

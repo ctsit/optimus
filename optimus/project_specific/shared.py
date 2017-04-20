@@ -49,8 +49,8 @@ def build_flat_record(config, data):
 
 def derive_form_completed(config, data):
     """
-    From the config takes the form name and sets the form_completed
-    value to Y. This is in shared because every form has this field
+    From the config takes the form name and sets the form_complete
+    value to 2. This is in shared because every form has this field
     automatically
     """
     forms = config['forms']
@@ -58,7 +58,7 @@ def derive_form_completed(config, data):
     for record in data:
         for name in form_names:
             if record.get(name):
-                record[name][name + '_completed'] = 'Y'
+                record[name][name + '_complete'] = '2'
     return data
 
 def truncate_extra_events(config, data):
