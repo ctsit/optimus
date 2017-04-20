@@ -26,7 +26,7 @@ _output = '--output'
 _delim = 'delimiter' # how the csv is delimited
 _qc = 'quotechar' # how things are quoted
 
-def main(args=docopt(docstr)):
+def main(args):
     with open(args[_config], 'r') as config_file:
         global config
         config = yaml.load(config_file.read())
@@ -72,9 +72,11 @@ def get_row_data(row):
                 data_for_row.append(datum)
     return data_for_row or []
 
-
-if __name__ == '__main__':
+def cli_run():
     args = docopt(docstr)
     main(args)
+
+if __name__ == '__main__':
+    cli_run()
     exit()
 
