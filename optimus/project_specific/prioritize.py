@@ -1,4 +1,3 @@
-from .shared import derive_form_completed
 from .hcv_target import build_flat_record, derive_fields, truncate_extra_events, flatten_forms
 
 def pipeline(config, csv_data):
@@ -7,7 +6,6 @@ def pipeline(config, csv_data):
     pipeline = [
         build_flat_record,
         derive_fields,
-        derive_form_completed,
         truncate_extra_events,
         flatten_forms
     ]

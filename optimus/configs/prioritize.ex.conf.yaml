@@ -1,7 +1,6 @@
 # project specific processing
 
-project: "hcv_target"
-# project: "prioritize"
+project: "prioritize"
 
 # redcap form stuff
 
@@ -15,7 +14,6 @@ derived_types:
 
 cbc: &cbc
   form_name: cbc_imported
-  form_imported: cbc_im_nximport
   events: 200
   csv_fields: 
     record_id: &record_id dm_subjid
@@ -69,15 +67,12 @@ cbc: &cbc
     
 chemistry: &chemistry
   form_name: chem_imported
-  form_imported: chem_im_nximport
   events: 200
   csv_fields: 
     serum_alt: &serum_alt alt_im_lborres
     serum_alt_unit: &serum_alt_unit alt_im_lborresu
     serum_ast: &serum_ast ast_im_lborres
     serum_ast_unit: &serum_ast_unit ast_im_lborresu
-    alkaline_phos: &alk_phos alp_im_lborres
-    alkaline_phos_unit: &alk_phos_unit alp_im_lborresu
     total_bilirubin: &tot_bil tbil_im_lborres
     total_bilirubin_unit: &tot_bil_unit tbil_im_lborresu
     direct_bilirubin: &dir_bil dbil_im_lborres
@@ -105,10 +100,6 @@ chemistry: &chemistry
       field: ast_im_lbstat
       type: *status
       uses: [*serum_ast, *serum_ast_unit]
-    alkaline_phos_completed: &alk_phos_completed
-      field: alp_im_lbstat
-      type: *status
-      uses: [*alk_phos, *alk_phos_unit]
     total_bilirubin_completed: &tot_bil_completed
       field: tbil_im_lbstat
       type: *status
