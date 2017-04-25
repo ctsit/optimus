@@ -6,6 +6,7 @@ def pipeline(config, csv_data):
     pipeline = [
         build_flat_record,
         derive_fields,
+        pull_events_left,
         truncate_extra_events,
         flatten_forms
     ]
