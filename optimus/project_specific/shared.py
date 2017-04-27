@@ -1,3 +1,5 @@
+from copy import copy
+
 def form_for_field(config, field):
     """
     Gets the form name which contains the field that is passed in
@@ -49,8 +51,8 @@ def build_flat_record(config, data):
 
 def derive_form_completed(config, data):
     """
-    From the config takes the form name and sets the form_completed
-    value to Y. This is in shared because every form has this field
+    From the config takes the form name and sets the form_complete
+    value to 2. This is in shared because every form has this field
     automatically
     """
     forms = config['forms']
@@ -58,7 +60,63 @@ def derive_form_completed(config, data):
     for record in data:
         for name in form_names:
             if record.get(name):
-                record[name][name + '_completed'] = 'Y'
+                record[name][name + '_complete'] = '2'
+    return data
+
+def __find_next(events, current_index, form_name):
+    """
+    Finds the next form in the event series or none. Removes
+    that form from the event it was found in and returns the
+    form
+
+    This function is a helper for use in pull_events_left
+    """
+    form = None
+    while current_index < len(events) - 1:
+        current_index += 1
+        if events[current_index].get(form_name):
+            form = copy(events[current_index].get(form_name))
+            del events[current_index][form_name]
+            break
+        else:
+            pass
+    return form
+
+
+def pull_events_left(config, data):
+    """
+    There are some projects where the events across forms on a single
+    subject are not temporally aligned. In this case, the first instance
+    of a form should be on the first event
+    """
+    forms = config['forms']
+    form_names = [form['form_name'] for form in forms]
+    subj_key = config['subject_field']
+
+    subs = {}
+    # for all subjects
+    for item in data:
+        if not subs.get(item[subj_key]):
+            subs[item[subj_key]] = []
+        subs[item[subj_key]].append(item)
+    # get their events
+    for subid, events in subs.items():
+        events.sort(key=lambda e: e['redcap_event_name'])
+        # look at the first event
+        for index, event in enumerate(events):
+            # for all forms
+            no_more_forms = []
+            for form in form_names:
+                # if it is missing a form
+                if not form in no_more_forms:
+                    if not event.get(form):
+                        # step forward to find that form
+                        next_form = __find_next(events, index, form)
+                        # if you can find the form, pull it back
+                        if next_form:
+                            event[form] = next_form
+                        else:
+                            no_more_forms.append(form)
     return data
 
 def truncate_extra_events(config, data):
@@ -113,8 +171,12 @@ def flatten_forms(config, data):
             if key in form_names:
                 form_name = key
                 form = record[form_name]
-                for key in form.keys():
-                    new_record[key] = form[key]
+                try:
+                    for key in form.keys():
+                        new_record[key] = form[key]
+                except:
+                    import pdb
+                    pdb.set_trace()
             else:
                 new_record[key] = record[key]
         new_data.append(new_record)

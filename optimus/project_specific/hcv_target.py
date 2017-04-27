@@ -96,7 +96,7 @@ def pipeline(config, csv_data):
         build_flat_record,
         derive_fields,
         derive_form_imported,
-        derive_form_completed,
+        pull_events_left,
         truncate_extra_events,
         flatten_forms
     ]
@@ -106,6 +106,7 @@ def pipeline(config, csv_data):
         'data': csv_data
     }
     for func in pipeline:
+        print('Optimus pipeline doing: {}'.format(func))
         form_data = func(**kwargs)
         kwargs['data'] = form_data
     completed = kwargs['data']
