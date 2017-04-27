@@ -23,10 +23,10 @@ cbc: &cbc
     neutrophils_percent_unit: &neut_percent_unit neut_im_lborresu
     absolute_neutrophils: &abs_neut anc_im_lborres
     absolute_neutrophils_unit: &abs_neut_unit anc_im_lborresu
-    lymphocytes_total_cells: &lymphocytes_total_cells lymce_im_lborres
-    lymphocytes_total_cells_unit: &lymphocytes_total_cells_unit lymce_im_lborresu
-    lymphocytes: &lymphocytes lym_im_lborres
-    lymphocytes_unit: &lymphocytes_unit lym_im_lborresu
+    lymphocytes_total_cells: &lymphocytes_total_cells lym_im_lborres
+    lymphocytes_total_cells_unit: &lymphocytes_total_cells_unit lym_im_lborresu
+    lymphocytes: &lymphocytes lymce_im_lborres
+    lymphocytes_unit: &lymphocytes_unit lymce_im_lborresu
     platelets: &platelets plat_im_lborres
     platelets_unit: &platelets_unit plat_im_lborresu
     hemoglobin: &hemoglobin hemo_im_lborres
