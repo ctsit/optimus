@@ -46,11 +46,11 @@ cbc: &cbc
       type: *status
       uses: [*abs_neut, *abs_neut_unit]
     lymphocytes_total_cells_completed: &lymce_complete
-      field: lymce_im_lbstat
+      field: lym_im_lbstat
       type: *status
       uses: [*lymphocytes_total_cells, *lymphocytes_total_cells_unit]
     lymphocytes_completed: &lym_complete
-      field: lym_im_lbstat
+      field: lymce_im_lbstat
       type: *status
       uses: [*lymphocytes, *lymphocytes_unit]
     platelets_completed: &platelets_complete
