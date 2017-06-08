@@ -27,27 +27,35 @@ def derive_form_fields(config, form_config, form, event, subj):
                         value = None
                 else:
                     value = "NOT_DONE"
+                    # blank out fields that could have been set previously but now may
+                    # not be done. This shouldnt happen often since the past shouldnt
+                    # change
+                    for used_field in uses:
+                        form[used_field] = ''
+
         else:
             if der_type == hcv_status_type:
+                hcv_quant_field = form_config['csv_fields']['hcv_quant']
+                hcv_unit_field = form_config['csv_fields']['hcv_unit']
+                hcv_presence_field = form_config['csv_fields']['hcv_prescence']
                 try:
-                    hcv_quant_field = form_config['csv_fields']['hcv_quant']
-                    hcv_prescence_field = form_config['csv_fields']['hcv_prescence']
-                    is_quantitative = float(form.get(hcv_quant_field))
+                    is_quant = float(form.get(hcv_quant_field))
                     value = 'Y'
-                    del form[hcv_prescence_field]
-                except Exception as err:
-                    hcv_quant_field = form_config['csv_fields']['hcv_quant']
-                    hcv_unit_field = form_config['csv_fields']['hcv_unit']
+                    form[hcv_presence_field] = ''
+                except:
                     value = 'N'
-                    del form[hcv_quant_field]
-                    del form[hcv_unit_field]
+                    form[hcv_quant_field] = ''
+                    form[hcv_unir_field] = ''
+
             elif der_type == date_completed_type:
                 if uses == 'redcap_event_name':
                     value = event
 
-
-        if not value == None and target_field:
-            form[target_field] = value
+        if target_field:
+            form[target_field] = value if value else ''
+            # Setting this to an emptry string is important as there could be
+            # a change which gives a lab where there wasnt before and so we would
+            # need to blank our the old derived value
 
     return form
 

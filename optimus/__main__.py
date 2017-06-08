@@ -48,12 +48,14 @@ def main(args):
     if args.get(_output):
         with open(args[_output], 'w') as outfile:
             if args.get('--debug'):
-                outfile.write(json.dumps(transformed, indent=4))
+                outfile.write(json.dumps(transformed, indent=4, sort_keys=True))
+                outfile.write('\n')
             else:
                 outfile.write(json.dumps(transformed))
     else:
         if args.get('--debug'):
-            print(json.dumps(transformed, indent=4))
+            print(json.dumps(transformed, indent=4, sort_keys=True))
+            print()
         else:
             print(json.dumps(transformed))
 
