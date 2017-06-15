@@ -2,6 +2,8 @@
 
 project: "hcv_target"
 
+redcap_url: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX 
+token: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 # redcap form stuff
 
 subject_field: &subject_field dm_subjid
@@ -67,7 +69,7 @@ cbc: &cbc
       uses: *event_field
     
 chemistry: &chemistry
-  form_name: chem_imported
+  form_name: chemistry_imported
   form_imported: chem_im_nximport
   events: 200
   csv_fields: 

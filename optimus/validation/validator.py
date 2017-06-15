@@ -9,8 +9,8 @@ class Validator(object):
         self.fields = self._get_fields_from_config(form_config)
         self.metadata = metadata
 
-    def _get_fields_from_config(form_config):
-        csv_fields = [item for key, item in form_config['csv_fields'].items()]
+    def _get_fields_from_config(self, form_config):
+        csv_fields = [item for key, item in form_config['csv_fields'].items() if key != 'record_id']
         derived_fields = [item['field'] for key, item in form_config['derived_fields'].items()]
         return list(chain(csv_fields, derived_fields))
 
@@ -19,11 +19,11 @@ class Validator(object):
         field_name = None
         for my_field in self.fields:
             for redcap_field in self.metadata:
-                if my_field == recap_field['field_name']:
-                    valid = valid and self.form_name == redcap_field['form_name']:
-                    if not valid:
-                        field_name = my_field
-                        break
+                if my_field == redcap_field['field_name']:
+                    valid = valid and self.form_name == redcap_field['form_name']
+            if not valid:
+                field_name = my_field
+                break
         return valid, field_name, self.form_name
 
 def validate_config(config, metadata_path=None):
