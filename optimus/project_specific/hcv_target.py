@@ -45,7 +45,7 @@ def derive_form_fields(config, form_config, form, event, subj):
                 except:
                     value = 'N'
                     form[hcv_quant_field] = ''
-                    form[hcv_unir_field] = ''
+                    form[hcv_unit_field] = ''
 
             elif der_type == date_completed_type:
                 if uses == 'redcap_event_name':
