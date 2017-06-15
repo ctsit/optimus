@@ -17,6 +17,7 @@ import dateutil.parser as date_parser
 import yaml
 
 import optimus.project_specific as ps
+import optimus.validation as validation
 
 _file = '<file>'
 _config = '<config>'
@@ -30,6 +31,8 @@ def main(args):
     with open(args[_config], 'r') as config_file:
         global config
         config = yaml.load(config_file.read())
+
+    validation.validate_config(config)
 
     csv_file = open(args[_file], 'r')
     data = csv.DictReader(csv_file, delimiter=config[_delim], quotechar=config[_qc])
