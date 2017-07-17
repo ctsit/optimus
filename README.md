@@ -1,4 +1,4 @@
-# optimus
+# optimus 1.0.0
 Optimus transforms and rolls out your csv data to redcap.
 
 ## What is optimus? ##
