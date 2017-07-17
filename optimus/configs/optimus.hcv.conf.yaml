@@ -2,7 +2,7 @@
 
 project: "hcv_target"
 
-redcap_url: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX 
+redcap_url: http://XXXXXXXXXXX.org/redcap/api/
 token: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 # redcap form stuff
 

@@ -32,7 +32,19 @@ def main(args):
         global config
         config = yaml.load(config_file.read())
 
-    validation.validate_config(config)
+    if config.get('redcap_url') and config.get('token'):
+        validation.validate_config(config)
+    else:
+        print("""
+
+        !!!WARNING!!!
+        You are running optimus without a way to connect to RedCap.
+        We CANNOT validate your config, and it could cause data loss.
+
+        If you do not want this, add a redcap_url, and token parameter to the
+        config yaml file.
+        """)
+
 
     csv_file = open(args[_file], 'r')
     data = csv.DictReader(csv_file, delimiter=config[_delim], quotechar=config[_qc])
