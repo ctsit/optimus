@@ -1,3 +1,7 @@
+## [1.0.1] - 2017-07-18
+### Bugfix
+ * bugfix missing import function pull_events_left
+
 ## [1.0.0] - 2017-07-17
 ### Summary
  * Safer optimus runs with better data passing through. Now requires redcap connectivity
