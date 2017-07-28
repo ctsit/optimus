@@ -164,7 +164,7 @@ hcvrna: &hcvrna
   csv_fields:
     hcv_quant: &hcv_quant hcv_im_lborres
     hcv_unit: &hcv_unit hcv_im_lborresu
-    hcv_prescence: &hcv_prescence hcv_im_supplb_hcvdtct
+    hcv_presence: &hcv_presence hcv_im_supplb_hcvdtct
   derived_fields:
     done_date: &rna_done_date
       field: hcv_im_lbdtc
@@ -172,7 +172,7 @@ hcvrna: &hcvrna
       uses: *event_field
     has_quant:
       field: hcv_im_supplb_hcvquant
-      uses: [*hcv_quant, *hcv_unit, *hcv_prescence]
+      uses: [*hcv_quant, *hcv_unit, *hcv_presence]
       type: *hcv_status
 
 forms:
@@ -389,6 +389,6 @@ rows:
         date: *event_header
         subj: *subject
       - datum: *value_header
-        field: *hcv_prescence
+        field: *hcv_presence
         date: *event_header
         subj: *subject
