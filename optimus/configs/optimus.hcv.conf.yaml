@@ -2,8 +2,10 @@
 
 project: "hcv_target"
 
-redcap_url: http://XXXXXXXXXXX.org/redcap/api/
+redcap_url: http://redi2.dev/redcap/api/
 token: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+# metadata_path: metadata.json
+
 # redcap form stuff
 
 subject_field: &subject_field dm_subjid

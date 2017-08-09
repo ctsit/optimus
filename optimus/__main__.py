@@ -32,18 +32,15 @@ def main(args):
         global config
         config = yaml.load(config_file.read())
 
+    # Check that the config has forms and fields properly aligned
     if config.get('redcap_url') and config.get('token'):
         validation.validate_config(config)
+    elif config.get('metadata_path'):
+        with open(config.get('metadata_path'), 'r') as metadata_file:
+            data = json.load(metadata_file)
+        validation.validate_config(config, data)
     else:
-        print("""
-
-        !!!WARNING!!!
-        You are running optimus without a way to connect to RedCap.
-        We CANNOT validate your config, and it could cause data loss.
-
-        If you do not want this, add a redcap_url, and token parameter to the
-        config yaml file.
-        """)
+        validation.warning()
 
 
     csv_file = open(args[_file], 'r')
