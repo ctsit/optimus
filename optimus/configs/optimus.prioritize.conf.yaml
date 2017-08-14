@@ -4,6 +4,8 @@ project: "prioritize"
 
 redcap_url: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX 
 token: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+# metadata_path: configs/metadata.json
+
 # redcap form stuff
 
 subject_field: &subject_field dm_subjid
