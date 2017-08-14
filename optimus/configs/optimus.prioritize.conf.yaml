@@ -2,6 +2,10 @@
 
 project: "prioritize"
 
+redcap_url: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX 
+token: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+# metadata_path: configs/metadata.json
+
 # redcap form stuff
 
 subject_field: &subject_field dm_subjid
@@ -66,7 +70,7 @@ cbc: &cbc
       uses: *event_field
     
 chemistry: &chemistry
-  form_name: chem_imported
+  form_name: chemistry_imported
   events: 200
   csv_fields: 
     serum_alt: &serum_alt alt_im_lborres
@@ -152,14 +156,14 @@ hcvrna: &hcvrna
   csv_fields:
     hcv_quant: &hcv_quant hcv_im_lborres
     hcv_unit: &hcv_unit hcv_im_lborresu
-    hcv_prescence: &hcv_prescence hcv_supplb_hcvdtct
+    hcv_prescence: &hcv_prescence hcv_im_supplb_hcvdtct
   derived_fields:
     done_date: &rna_done_date
       field: hcv_im_lbdtc
       type: *date_completed
       uses: *event_field
     has_quant:
-      field: hcv_supplb_hcvquant
+      field: hcv_im_supplb_hcvquant
       uses: [*hcv_quant, *hcv_unit, *hcv_prescence]
       type: *hcv_status
 

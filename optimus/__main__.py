@@ -17,6 +17,7 @@ import dateutil.parser as date_parser
 import yaml
 
 import optimus.project_specific as ps
+import optimus.validation as validation
 
 _file = '<file>'
 _config = '<config>'
@@ -30,6 +31,17 @@ def main(args):
     with open(args[_config], 'r') as config_file:
         global config
         config = yaml.load(config_file.read())
+
+    # Check that the config has forms and fields properly aligned
+    if config.get('redcap_url') and config.get('token'):
+        validation.validate_config(config)
+    elif config.get('metadata_path'):
+        with open(config.get('metadata_path'), 'r') as metadata_file:
+            data = json.load(metadata_file)
+        validation.validate_config(config, data)
+    else:
+        validation.warning()
+
 
     csv_file = open(args[_file], 'r')
     data = csv.DictReader(csv_file, delimiter=config[_delim], quotechar=config[_qc])
@@ -48,12 +60,14 @@ def main(args):
     if args.get(_output):
         with open(args[_output], 'w') as outfile:
             if args.get('--debug'):
-                outfile.write(json.dumps(transformed, indent=4))
+                outfile.write(json.dumps(transformed, indent=4, sort_keys=True))
+                outfile.write('\n')
             else:
                 outfile.write(json.dumps(transformed))
     else:
         if args.get('--debug'):
-            print(json.dumps(transformed, indent=4))
+            print(json.dumps(transformed, indent=4, sort_keys=True))
+            print()
         else:
             print(json.dumps(transformed))
 

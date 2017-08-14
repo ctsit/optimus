@@ -1,3 +1,25 @@
+## [1.1.0] - 2017-08-14
+This is release is to catch up the CTSIT branch a bit and adds more validation
+### Added
+  - make validation more robust, adds support for static metadata
+
+## [1.0.1] - 2017-07-18
+### Bugfix
+ * bugfix missing import function pull_events_left
+
+## [1.0.0] - 2017-07-17
+### Summary
+ * Safer optimus runs with better data passing through. Now requires redcap connectivity
+
+### Added
+ * add validator warning message (Patrick White)
+ * provides validation function for optimus configs (Patrick White)
+
+### Bugfix
+ * fix field name for hcv detected (Patrick White)
+ * overwrite invalid branching logic in the hcv and prioritize project (Patrick White)
+
+
 ## [0.1.0] - 2017-05-18
 ### Summary
  * This is the first release
