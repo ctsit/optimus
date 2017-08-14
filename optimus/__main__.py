@@ -32,7 +32,16 @@ def main(args):
         global config
         config = yaml.load(config_file.read())
 
-    validation.validate_config(config)
+    # Check that the config has forms and fields properly aligned
+    if config.get('redcap_url') and config.get('token'):
+        validation.validate_config(config)
+    elif config.get('metadata_path'):
+        with open(config.get('metadata_path'), 'r') as metadata_file:
+            data = json.load(metadata_file)
+        validation.validate_config(config, data)
+    else:
+        validation.warning()
+
 
     csv_file = open(args[_file], 'r')
     data = csv.DictReader(csv_file, delimiter=config[_delim], quotechar=config[_qc])
