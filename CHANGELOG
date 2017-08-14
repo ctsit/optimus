@@ -1,3 +1,8 @@
+## [1.1.0] - 2017-08-14
+This is release is to catch up the CTSIT branch a bit and adds more validation
+### Added
+  - make validation more robust, adds support for static metadata
+
 ## [1.0.1] - 2017-07-18
 ### Bugfix
  * bugfix missing import function pull_events_left
