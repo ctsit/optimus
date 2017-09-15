@@ -1,5 +1,9 @@
 ## [1.1.1] - 2017-08-14
 This release contains a hotfix for fixing how hcv status is derived
+### Added
+  - make validation more robust, adds support for static metadata
+  - added unsafe flag for testing
+
 ### Bugfix
   - hcv im_supplb is derived as it should
 
