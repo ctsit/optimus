@@ -1,0 +1,21 @@
+* Description of problem
+When getting labs for HCV RNA frequently strange data comes in. The best case is when
+the value of the lab is some float and it is unambiguously detected. There are times 
+that the data coming in is some sort of string or something. These are harder to deal with.
+Since Optimus' primary concern is transformation of the data, the bare minimum of
+checking and fixing will be done here.
+* Strategies
+There are a few different ways of dealing with this problem and they are listed below.
+** Separate labs for quantitative results and presence
+If there are seperate rows with different lab names for the presence of HCV RNA and the
+quantitative value, this is easily handled. The presence will be found in lab corresponding
+to it and the quantitative will be found in the other lab. This is accomplished by having
+two row key blocks in the `rows` dictionary in the config
+** Separate column for the presence
+If there is an additional column for presence you can have an additional `output` block 
+that will pull from that column to get the presence. This is shown in this directory with
+the `presence_col` files
+** Derive the value from the data
+This is the final approach that is supported. This should be avoided if possible because it
+is too likely to say that something was not specified. See the `results_as_of_1.1.1.json`
+to see what was being done as of version 1.1.1

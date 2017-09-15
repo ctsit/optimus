@@ -1,3 +1,8 @@
+## [1.1.1] - 2017-08-14
+This release contains a hotfix for fixing how hcv status is derived
+### Bugfix
+  - hcv im_supplb is derived as it should
+
 ## [1.1.0] - 2017-08-14
 This is release is to catch up the CTSIT branch a bit and adds more validation
 ### Added
