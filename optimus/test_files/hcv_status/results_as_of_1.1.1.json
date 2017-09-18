@@ -1,0 +1,89 @@
+Optimus pipeline doing: <function build_flat_record at 0x101a7bf28>
+Optimus pipeline doing: <function derive_fields at 0x101a5d378>
+Optimus pipeline doing: <function derive_form_imported at 0x101a5d400>
+Optimus pipeline doing: <function pull_events_left at 0x101a5d048>
+Optimus pipeline doing: <function truncate_extra_events at 0x101a5d0d0>
+Optimus pipeline doing: <function flatten_forms at 0x101a5d158>
+[
+    {
+        "dm_subjid": "1",
+        "hcv_im_lbdtc": "1991-10-04",
+        "hcv_im_lborres": "2",
+        "hcv_im_lborresu": "iu/ml",
+        "hcv_im_supplb_hcvdtct": "DETECTED",
+        "hcv_im_supplb_hcvquant": "1991-10-04",
+        "hcv_nximport": "Y",
+        "redcap_event_name": "1991-10-04"
+    },
+    {
+        "dm_subjid": "1",
+        "hcv_im_lbdtc": "1991-10-05",
+        "hcv_im_lborres": "Less than 5",
+        "hcv_im_lborresu": "iu/ml",
+        "hcv_im_supplb_hcvdtct": "NOT SPECIFIED",
+        "hcv_im_supplb_hcvquant": "1991-10-05",
+        "hcv_nximport": "Y",
+        "redcap_event_name": "1991-10-05"
+    },
+    {
+        "dm_subjid": "1",
+        "hcv_im_lbdtc": "1991-10-06",
+        "hcv_im_lborres": "< 45 Not DeTeCted",
+        "hcv_im_lborresu": "iu/ml",
+        "hcv_im_supplb_hcvdtct": "BLOQ",
+        "hcv_im_supplb_hcvquant": "1991-10-06",
+        "hcv_nximport": "Y",
+        "redcap_event_name": "1991-10-06"
+    },
+    {
+        "dm_subjid": "1",
+        "hcv_im_lbdtc": "1991-10-07",
+        "hcv_im_lborres": "Not DeTeCted",
+        "hcv_im_lborresu": "iu/ml",
+        "hcv_im_supplb_hcvdtct": "BLOQ",
+        "hcv_im_supplb_hcvquant": "1991-10-07",
+        "hcv_nximport": "Y",
+        "redcap_event_name": "1991-10-07"
+    },
+    {
+        "dm_subjid": "1",
+        "hcv_im_lbdtc": "1991-10-08",
+        "hcv_im_lborres": "5 DeTeCted",
+        "hcv_im_lborresu": "iu/ml",
+        "hcv_im_supplb_hcvdtct": "NOT SPECIFIED",
+        "hcv_im_supplb_hcvquant": "1991-10-08",
+        "hcv_nximport": "Y",
+        "redcap_event_name": "1991-10-08"
+    },
+    {
+        "dm_subjid": "1",
+        "hcv_im_lbdtc": "1991-10-09",
+        "hcv_im_lborres": "<5 DeTeCted",
+        "hcv_im_lborresu": "iu/ml",
+        "hcv_im_supplb_hcvdtct": "NOT SPECIFIED",
+        "hcv_im_supplb_hcvquant": "1991-10-09",
+        "hcv_nximport": "Y",
+        "redcap_event_name": "1991-10-09"
+    },
+    {
+        "dm_subjid": "1",
+        "hcv_im_lbdtc": "1991-10-10",
+        "hcv_im_lborres": "jfklasjfl",
+        "hcv_im_lborresu": "iu/ml",
+        "hcv_im_supplb_hcvdtct": "NOT SPECIFIED",
+        "hcv_im_supplb_hcvquant": "1991-10-10",
+        "hcv_nximport": "Y",
+        "redcap_event_name": "1991-10-10"
+    },
+    {
+        "dm_subjid": "1",
+        "hcv_im_lbdtc": "1991-10-11",
+        "hcv_im_lborres": "see below",
+        "hcv_im_lborresu": "iu/ml",
+        "hcv_im_supplb_hcvdtct": "NOT SPECIFIED",
+        "hcv_im_supplb_hcvquant": "1991-10-11",
+        "hcv_nximport": "Y",
+        "redcap_event_name": "1991-10-11"
+    }
+]
+

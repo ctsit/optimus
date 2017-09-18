@@ -1,0 +1,66 @@
+# project specific processing
+
+project: "hcv_target"
+
+redcap_url: http://redi2.dev/redcap/api/
+token: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+# metadata_path: metadata.json
+
+# redcap form stuff
+
+subject_field: &subject_field dm_subjid
+event_field: &event_field redcap_event_name
+
+derived_types:
+  status: &status status
+  hcv_status: &hcv_status hcv_status
+  date_completed: &date_completed date_completed
+
+hcvrna: &hcvrna
+  form_name: hcv_rna_imported
+  form_imported: hcv_nximport
+  events: 60
+  csv_fields:
+    hcv_quant: &hcv_quant hcv_im_lborres
+    hcv_unit: &hcv_unit hcv_im_lborresu
+    hcv_presence: &hcv_presence hcv_im_supplb_hcvdtct
+  derived_fields:
+    done_date: &rna_done_date
+      field: hcv_im_lbdtc
+      type: *date_completed
+      uses: *event_field
+    has_quant:
+      field: hcv_im_supplb_hcvquant
+      uses: [*hcv_quant, *hcv_unit, *hcv_presence]
+      type: *hcv_status
+
+forms:
+  - *hcvrna
+
+# csv stuff
+delimiter: ','
+quotechar: '"'
+headers:
+  subject_header: &subject STUDY_ID
+  value_header: &value_header ORD_VALUE
+  unit_header: &unit_header REFERENCE_UNIT
+  event_header: &event_header RESULT_DATE
+  test_ident_header: &test_name NAME
+  hcv_status: &hcv_pres_col presence
+
+key_header: *test_name
+rows:
+  - row_key: HCV RNA, QUANTITATIVE REAL TIME PCR
+    outputs:
+      - datum: *value_header
+        field: *hcv_quant
+        date: *event_header
+        subj: *subject
+      - datum: *unit_header
+        field: *hcv_unit
+        date: *event_header
+        subj: *subject
+      - datum: *hcv_pres_col
+        field: *hcv_presence
+        date: *event_header
+        subj: *subject

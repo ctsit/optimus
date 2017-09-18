@@ -1,0 +1,39 @@
+Optimus pipeline doing: <function build_flat_record at 0x10f936f28>
+Optimus pipeline doing: <function derive_fields at 0x10f918378>
+Optimus pipeline doing: <function derive_form_imported at 0x10f918400>
+Optimus pipeline doing: <function pull_events_left at 0x10f918048>
+Optimus pipeline doing: <function truncate_extra_events at 0x10f9180d0>
+Optimus pipeline doing: <function flatten_forms at 0x10f918158>
+[
+    {
+        "dm_subjid": "1",
+        "hcv_im_lbdtc": "1991-10-04",
+        "hcv_im_lborres": "2",
+        "hcv_im_lborresu": "iu/ml",
+        "hcv_im_supplb_hcvdtct": "DETECTED",
+        "hcv_im_supplb_hcvquant": "1991-10-04",
+        "hcv_nximport": "Y",
+        "redcap_event_name": "1991-10-04"
+    },
+    {
+        "dm_subjid": "1",
+        "hcv_im_lbdtc": "1991-10-05",
+        "hcv_im_lborres": "3",
+        "hcv_im_lborresu": "iu/ml",
+        "hcv_im_supplb_hcvdtct": "BLOQ",
+        "hcv_im_supplb_hcvquant": "1991-10-05",
+        "hcv_nximport": "Y",
+        "redcap_event_name": "1991-10-05"
+    },
+    {
+        "dm_subjid": "1",
+        "hcv_im_lbdtc": "1991-10-06",
+        "hcv_im_lborres": "4",
+        "hcv_im_lborresu": "iu/ml",
+        "hcv_im_supplb_hcvdtct": "NOT SPECIFIED",
+        "hcv_im_supplb_hcvquant": "1991-10-06",
+        "hcv_nximport": "Y",
+        "redcap_event_name": "1991-10-06"
+    }
+]
+

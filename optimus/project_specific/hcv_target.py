@@ -1,5 +1,39 @@
 from .shared import *
 
+def process_hcv_values(quant, unit, presence):
+    """
+    In the processing of hcv_rna labs there are a couple of things that
+    could happen.
+
+    - the presence or absence of hcv rna along with the quantitative measure
+    will be in the same lab
+    - or the two will be split into different labs
+
+    This poses some unique difficulties because the redcap form requires some
+    branching logic.
+    """
+    has_hcv = 'DETECTED'
+    no_hcv = 'BLOQ'
+    cannot_determine = 'NOT SPECIFIED'
+    states = [has_hcv, no_hcv, cannot_determine]
+
+    if presence in states:
+        # we processed or got presence from another lab or got the right
+        # data from some other process so, we dont need to introspect the
+        # quant or unit variables
+        return quant, unit, presence
+
+    if not presence in states:
+        try:
+            float(quant)
+            return quant, unit, has_hcv
+        except:
+            if 'not detected' in str(quant).lower():
+                return quant, unit, no_hcv
+            else:
+                return quant, unit, cannot_determine
+
+
 def derive_form_fields(config, form_config, form, event, subj):
     """
     Here we derive the branching logic fields on the form
@@ -37,15 +71,15 @@ def derive_form_fields(config, form_config, form, event, subj):
             if der_type == hcv_status_type:
                 hcv_quant_field = form_config['csv_fields']['hcv_quant']
                 hcv_unit_field = form_config['csv_fields']['hcv_unit']
-                hcv_presence_field = form_config['csv_fields']['hcv_prescence']
-                try:
-                    is_quant = float(form.get(hcv_quant_field))
-                    value = 'Y'
-                    form[hcv_presence_field] = ''
-                except:
-                    value = 'N'
-                    form[hcv_quant_field] = ''
-                    form[hcv_unit_field] = ''
+                hcv_presence_field = form_config['csv_fields']['hcv_presence']
+
+                quant, unit, presence = process_hcv_values(form[hcv_quant_field],
+                                                           form[hcv_unit_field],
+                                                           form[hcv_presence_field])
+
+                form[hcv_quant_field] = quant
+                form[hcv_unit_field] = unit
+                form[hcv_presence_field] = presence
 
             elif der_type == date_completed_type:
                 if uses == 'redcap_event_name':
