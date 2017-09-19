@@ -17,7 +17,7 @@ setup(name='optimus',
       packages=['optimus'],
       entry_points={
           'console_scripts': [
-              'optimus = optimus.__main__:cli_run',
+              'optimus = optimus.__main__:main',
           ],
       },
       install_requires=[

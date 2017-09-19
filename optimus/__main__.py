@@ -1,10 +1,11 @@
 docstr = """
 Optimus
 
-Usage: optimus.py [-hdu] (<file> <config>) [-o <output.json>]
+Usage: optimus.py [-hduv] (<file> <config>) [-o <output.json>]
 
 Options:
   -h --help                                     show this message and exit
+  -v --version                                  show the version
   -d --debug                                    json is indented for debugging
   -u --unsafe                                   do not check the metadata for validation
   -o <output.json> --output=<output.json>       optional output file for results
@@ -19,6 +20,7 @@ import yaml
 
 import optimus.project_specific as ps
 import optimus.validation as validation
+from optimus.version import __version__
 
 _file = '<file>'
 _config = '<config>'
@@ -28,7 +30,8 @@ _output = '--output'
 _delim = 'delimiter' # how the csv is delimited
 _qc = 'quotechar' # how things are quoted
 
-def main(args):
+def main():
+    args = docopt(docstr, version=__version__)
     with open(args[_config], 'r') as config_file:
         global config
         config = yaml.load(config_file.read())
@@ -88,11 +91,8 @@ def get_row_data(row):
                 data_for_row.append(datum)
     return data_for_row or []
 
-def cli_run():
-    args = docopt(docstr)
-    main(args)
 
 if __name__ == '__main__':
-    cli_run()
+    main()
     exit()
 
