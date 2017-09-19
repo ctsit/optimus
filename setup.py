@@ -4,7 +4,7 @@ from setuptools import setup
 #per https://stackoverflow.com/a/17626524
 #and https://stackoverflow.com/a/2073599
 
-with open('claw/version.py') as ver:
+with open('optimus/version.py') as ver:
     exec(ver.read())
 
 setup(name='optimus',
@@ -13,7 +13,7 @@ setup(name='optimus',
       url='http://github.com/pfwhite/optimus',
       author='Patrick White',
       author_email='pfwhite9@gmail.com',
-      license='MIT',
+      license='Apache 2.0',
       packages=['optimus'],
       entry_points={
           'console_scripts': [
