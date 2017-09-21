@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='optimus',
-      version='1.1.1',
+      version='1.1.2',
       description='Optimus transforms and rolls out your csv data to redcap.',
       url='http://github.com/pfwhite/optimus',
       author='Patrick White',
