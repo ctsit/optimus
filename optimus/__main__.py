@@ -90,7 +90,6 @@ def get_row_data(row):
                 data_for_row.append(datum)
     return data_for_row or []
 
-
 def cli_run():
     args = docopt(docstr, version='Optimus %s' % __version__)
     main(args)
