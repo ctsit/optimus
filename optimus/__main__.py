@@ -1,10 +1,11 @@
 docstr = """
 Optimus
 
-Usage: optimus.py [-hdu] (<file> <config>) [-o <output.json>]
+Usage: optimus.py [-hduv] (<file> <config>) [-o <output.json>]
 
 Options:
   -h --help                                     show this message and exit
+  -v --version                                  show the version
   -d --debug                                    json is indented for debugging
   -u --unsafe                                   do not check the metadata for validation
   -o <output.json> --output=<output.json>       optional output file for results
@@ -19,6 +20,7 @@ import yaml
 
 import optimus.project_specific as ps
 import optimus.validation as validation
+from optimus.version import __version__
 
 _file = '<file>'
 _config = '<config>'
@@ -89,10 +91,10 @@ def get_row_data(row):
     return data_for_row or []
 
 def cli_run():
-    args = docopt(docstr)
+    args = docopt(docstr, version='Optimus %s' % __version__)
     main(args)
 
 if __name__ == '__main__':
-    cli_run()
+    cli_run
     exit()
 
