@@ -1,3 +1,8 @@
+## [1.1.2] - 2017-09-21
+This release contains a hotfix for fixing how hcv status is derived
+### Bugfix
+  - logic around the hcv_form derived fields was wrong
+
 ## [1.1.1] - 2017-08-14
 This release contains a hotfix for fixing how hcv status is derived
 ### Added

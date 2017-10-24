@@ -10,7 +10,11 @@ def process_hcv_values(quant, unit, presence):
     - or the two will be split into different labs
 
     This poses some unique difficulties because the redcap form requires some
-    branching logic.
+    branching logic. If there is a quantifiable result, then the hcv_im_supplb_hcvquant
+    field needs to be set to 'Y' otherwise it should be set to 'N'
+
+    You can determine this by the value of the hcv_im_supplb_hcvdtct field.
+    If it is DETECTED then we want to have yes. Anything else is N
     """
     has_hcv = 'DETECTED'
     no_hcv = 'BLOQ'
@@ -69,6 +73,7 @@ def derive_form_fields(config, form_config, form, event, subj):
 
         else:
             if der_type == hcv_status_type:
+                # this section is for the hcv_im_supplb_hcvquant field
                 hcv_quant_field = form_config['csv_fields']['hcv_quant']
                 hcv_unit_field = form_config['csv_fields']['hcv_unit']
                 hcv_presence_field = form_config['csv_fields']['hcv_presence']
@@ -77,9 +82,17 @@ def derive_form_fields(config, form_config, form, event, subj):
                                                            form[hcv_unit_field],
                                                            form[hcv_presence_field])
 
-                form[hcv_quant_field] = quant
-                form[hcv_unit_field] = unit
-                form[hcv_presence_field] = presence
+                value = 'Y' if presence == 'DETECTED' else 'N'
+
+                if value == 'N':
+                    form[hcv_quant_field] = ''
+                    form[hcv_unit_field] = ''
+                    form[hcv_presence_field] = presence
+                else:
+                    form[hcv_quant_field] = quant
+                    form[hcv_unit_field] = unit
+                    form[hcv_presence_field] = ''
+
 
             elif der_type == date_completed_type:
                 if uses == 'redcap_event_name':
