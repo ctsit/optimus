@@ -1,11 +1,13 @@
 docstr = """
 Optimus
 
-Usage: optimus.py [-hd] (<file> <config>) [-o <output.json>]
+Usage: optimus.py [-hduv] (<file> <config>) [-o <output.json>]
 
 Options:
   -h --help                                     show this message and exit
+  -v --version                                  show the version
   -d --debug                                    json is indented for debugging
+  -u --unsafe                                   do not check the metadata for validation
   -o <output.json> --output=<output.json>       optional output file for results
 
 """
@@ -18,6 +20,7 @@ import yaml
 
 import optimus.project_specific as ps
 import optimus.validation as validation
+from optimus.version import __version__
 
 _file = '<file>'
 _config = '<config>'
@@ -33,14 +36,15 @@ def main(args):
         config = yaml.load(config_file.read())
 
     # Check that the config has forms and fields properly aligned
-    if config.get('redcap_url') and config.get('token'):
-        validation.validate_config(config)
-    elif config.get('metadata_path'):
-        with open(config.get('metadata_path'), 'r') as metadata_file:
-            data = json.load(metadata_file)
-        validation.validate_config(config, data)
-    else:
-        validation.warning()
+    if not args.get('--unsafe'):
+        if config.get('redcap_url') and config.get('token'):
+            validation.validate_config(config)
+        elif config.get('metadata_path'):
+            with open(config.get('metadata_path'), 'r') as metadata_file:
+                data = json.load(metadata_file)
+            validation.validate_config(config, data)
+        else:
+            validation.warning()
 
 
     csv_file = open(args[_file], 'r')
@@ -87,10 +91,10 @@ def get_row_data(row):
     return data_for_row or []
 
 def cli_run():
-    args = docopt(docstr)
+    args = docopt(docstr, version='Optimus %s' % __version__)
     main(args)
 
 if __name__ == '__main__':
-    cli_run()
+    cli_run
     exit()
 

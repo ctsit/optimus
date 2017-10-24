@@ -1,10 +1,41 @@
+## [1.2.0] - 2017-10-24
+### Summary
+This release sets up docopt to work better and also updates dependencies
+to be specific versions
+
+### Added
+  - create a entry point function for docopt so it works better (Matthew McConnell)
+  - added cappy as a dependency (Matthew McConnell)
+  - add a new version file and have setup use it (Matthew McConnell)
+  - specify versions of dependencies (Matthew McConnell)
+
+### Fixed
+  - Fix hcv_rna rules to properly generate the hcv_im_supplb_hcvquant (Patrick White)
+
+### Changed
+  - update how main builds its args and how its cli call gets invoked (Matthew McConnell)
+
+## [1.1.2] - 2017-09-21
+This release contains a hotfix for fixing how hcv status is derived
+### Fixed
+  - logic around the hcv_form derived fields was wrong
+
+## [1.1.1] - 2017-08-14
+This release contains a hotfix for fixing how hcv status is derived
+### Added
+  - make validation more robust, adds support for static metadata
+  - added unsafe flag for testing
+
+### Fixed
+  - hcv im_supplb is derived as it should
+
 ## [1.1.0] - 2017-08-14
 This is release is to catch up the CTSIT branch a bit and adds more validation
 ### Added
   - make validation more robust, adds support for static metadata
 
 ## [1.0.1] - 2017-07-18
-### Bugfix
+### Fixed
  * bugfix missing import function pull_events_left
 
 ## [1.0.0] - 2017-07-17
@@ -15,7 +46,7 @@ This is release is to catch up the CTSIT branch a bit and adds more validation
  * add validator warning message (Patrick White)
  * provides validation function for optimus configs (Patrick White)
 
-### Bugfix
+### Fixed
  * fix field name for hcv detected (Patrick White)
  * overwrite invalid branching logic in the hcv and prioritize project (Patrick White)
 
