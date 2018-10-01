@@ -1,3 +1,9 @@
+## [1.2.1] - 2018-10-01
+### Fixed
+ * Fix typo in HCV presence logic (Taeber Rapczak) [Bug #7](https://github.com/ctsit/optimus/issues/7)
+ * Documentation inconsistencies related to the version number.
+
+
 ## [1.2.0] - 2017-10-24
 ### Summary
 This release sets up docopt to work better and also updates dependencies

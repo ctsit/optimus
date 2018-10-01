@@ -10,7 +10,7 @@ with open('optimus/version.py') as ver:
 setup(name='optimus',
       version=__version__,
       description='Optimus transforms and rolls out your csv data to redcap.',
-      url='http://github.com/pfwhite/optimus',
+      url='http://github.com/ctsit/optimus',
       author='Patrick White',
       author_email='pfwhite9@gmail.com',
       license='Apache 2.0',
