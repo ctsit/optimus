@@ -18,7 +18,7 @@ def process_hcv_values(quant, unit, presence):
     """
     has_hcv = 'DETECTED'
     no_hcv = 'BLOQ'
-    cannot_determine = 'NOT SPECIFIED'
+    cannot_determine = 'NOT_SPECIFIED'
     states = [has_hcv, no_hcv, cannot_determine]
 
     if presence in states:
